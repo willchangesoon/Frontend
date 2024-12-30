@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import KakaoSDKCommon
+import NaverThirdPartyLogin
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -10,6 +11,19 @@ import KakaoSDKCommon
   ) -> Bool {
       KakaoSDK.initSDK(appKey: "a4f326492511110af63a97490ab9c839")
     GeneratedPluginRegistrant.register(with: self)
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        var applicationResult = false
+        if (!applicationResult) {
+           applicationResult = NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
+        }
+        // if you use other application url process, please add code here.
+        
+        if (!applicationResult) {
+           applicationResult = super.application(app, open: url, options: options)
+        }
+        return applicationResult
+    }
 }

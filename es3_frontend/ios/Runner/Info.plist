@@ -29,7 +29,9 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+			    <string>naverUrlScheme</string>
 				<string>kakaoa4f326492511110af63a97490ab9c839</string>
+				<string>com.googleusercontent.apps.231534416234-5cl3t5kf1jekfttq3cf0jks0s8l4nq2t</string>
 			</array>
 		</dict>
 	</array>
@@ -40,6 +42,8 @@
 		<string>kakaokompassauth</string>
 		<string>kakaolink</string>
 		<string>kakaoplus</string>
+        <string>naversearchapp</string>
+        <string>naversearchthirdlogin</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -64,5 +68,43 @@
 	</array>
 	<key>KAKAO_APP_KEY</key>
     <string>a4f326492511110af63a97490ab9c839</string>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+        <string>com.googleusercontent.apps.231534416234-5cl3t5kf1jekfttq3cf0jks0s8l4nq2t.apps.googleusercontent.com</string>
+    </array>
+    <key>GIDClientID</key>
+    <string>231534416234-5cl3t5kf1jekfttq3cf0jks0s8l4nq2t.apps.googleusercontent.com</string>
+    <key>naverServiceAppUrlScheme</key>
+    <string>socialloginapp</string>
+    <key>naverConsumerKey</key>
+    <string>JIjhTmRMlTRaCF5yTiqf</string>
+    <key>naverConsumerSecret</key>
+    <string>jOhM2vyZ19</string>
+    <key>naverServiceAppName</key>
+    <string>Stray Cat Map</string>
+    <key>NSAppTransportSecurity</key>
+        <dict>
+           <key>NSAllowsArbitraryLoads</key>
+           <true/>
+           <key>NSExceptionDomains</key>
+           <dict>
+              <key>naver.com</key>
+              <dict>
+                 <key>NSExceptionRequiresForwardSecrecy</key>
+                 <false/>
+                 <key>NSIncludesSubdomains</key>
+                 <true/>
+              </dict>
+              <key>naver.net</key>
+              <dict>
+                 <key>NSExceptionRequiresForwardSecrecy</key>
+                 <false/>
+                 <key>NSIncludesSubdomains</key>
+                 <true/>
+              </dict>
+            </dict>
+        </dict>
 </dict>
 </plist>
