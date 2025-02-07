@@ -32,6 +32,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
       appBar: renderAppBar(),
       body: widget.child,
       bottomNavigationBar: renderBottomNav(),
+      backgroundColor: Colors.white,
     );
   }
 
@@ -95,6 +96,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black,
+      elevation: 10,
     );
   }
 }
