@@ -37,7 +37,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
 
   renderAppBar() {
     return AppBar(
-      backgroundColor: MAIN_COLOR,
+      backgroundColor: Colors.white,
       leading: Icon(Icons.logo_dev_outlined),
       title: widget.title != null
           ? Text(
@@ -46,7 +46,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
             )
           : null,
       centerTitle: true,
-      foregroundColor: Colors.white,
+      foregroundColor: Colors.black,
       actions: [
         IconButton(
           onPressed: () {},
@@ -91,10 +91,10 @@ class _DefaultLayoutState extends State<DefaultLayout> {
           label: 'my page',
         ),
       ],
-      backgroundColor: MAIN_COLOR,
+      backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white,
+      selectedItemColor: Colors.black,
+      unselectedItemColor: Colors.black,
     );
   }
 }
