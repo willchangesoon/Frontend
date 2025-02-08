@@ -29,16 +29,19 @@ class _DefaultLayoutState extends State<DefaultLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MAIN_COLOR,
       appBar: renderAppBar(),
-      body: widget.child,
+      body: Container(
+        color: Colors.white,
+        child: widget.child,
+      ),
       bottomNavigationBar: renderBottomNav(),
-      backgroundColor: Colors.white,
     );
   }
 
   renderAppBar() {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white60,
       leading: Icon(Icons.logo_dev_outlined),
       title: widget.title != null
           ? Text(
@@ -92,11 +95,11 @@ class _DefaultLayoutState extends State<DefaultLayout> {
           label: 'my page',
         ),
       ],
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white60,
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black,
-      elevation: 10,
+      elevation: 0,
     );
   }
 }

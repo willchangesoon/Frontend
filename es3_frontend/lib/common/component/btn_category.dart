@@ -5,18 +5,20 @@ class CategoryButton extends StatelessWidget {
   final String text;
   final bool selected;
   final bool? border;
+  final VoidCallback? onPressed;
 
   const CategoryButton({
     super.key,
     required this.text,
     required this.selected,
+    this.onPressed,
     this.border = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onPressed,
       child: Text(
         text,
         style: TextStyle(

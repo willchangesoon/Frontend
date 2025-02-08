@@ -11,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<String> mainMenus = ['home', 'ranking', 'sale', 'latest', 'brand'];
+  final List<String> mainMenus = ['home', 'rank', 'sale', 'latest', 'brand'];
   int _curSelectedMenu = 0;
   final Map<String, String> options = {
     "First Order": "images/options/first_buy.png",
@@ -19,6 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
     "Last buy": "images/options/last_buy.png",
     "Coupon": "images/options/coupon.png",
   };
+  final List<String> categories = ['all', 'clothing', 'bags', 'shoes', 'accessories', 'athletics'];
+  int _curSelectedCategory = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CategoryButton(
                 text: menu,
                 selected: _curSelectedMenu == index,
+                onPressed: (){
+                  setState(() {
+                    _curSelectedMenu = index;
+                  });
+                },
               ),
             ),
           );
@@ -66,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget listMenu() {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,15 +82,28 @@ class _HomeScreenState extends State<HomeScreen> {
             'Trending Products',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
-          Row(
-            children: [
-              CategoryButton(
-                text: 'bag',
-                selected: false,
-                border: true,
-              ),
-              CategoryButton(text: 'shoes', selected: true),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: categories.asMap().entries.map((entry) {
+                int index = entry.key;
+                String cat = entry.value;
+                return Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+                  child: CategoryButton(
+                    text: cat,
+                    selected: _curSelectedCategory == index,
+                    border: _curSelectedCategory != index,
+                    onPressed: (){
+                      setState(() {
+                        _curSelectedCategory = index;
+                      });
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
           )
         ],
       ),
