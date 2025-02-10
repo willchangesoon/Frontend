@@ -3,6 +3,7 @@ import 'package:es3_frontend/common/screen/s_category.dart';
 import 'package:es3_frontend/common/screen/s_event.dart';
 import 'package:es3_frontend/common/screen/s_favorite.dart';
 import 'package:es3_frontend/common/screen/s_home.dart';
+import 'package:es3_frontend/common/screen/s_login.dart';
 import 'package:es3_frontend/common/screen/s_mypage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,14 +12,13 @@ final routerProvider = Provider((ref) {
   return router;
 });
 
-
 final GoRouter router = GoRouter(
   initialLocation: '/home',
   routes: [
     ShellRoute(
       builder: (context, state, child) {
         return DefaultLayout(
-          child: child, // Injects the current child screen
+          child: child,
         );
       },
       routes: [
@@ -43,6 +43,10 @@ final GoRouter router = GoRouter(
           builder: (context, state) => MyPageScreen(),
         ),
       ],
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => LoginScreen(),
     ),
   ],
 );
