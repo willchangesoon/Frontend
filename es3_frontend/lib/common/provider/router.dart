@@ -5,6 +5,7 @@ import 'package:es3_frontend/common/screen/s_favorite.dart';
 import 'package:es3_frontend/common/screen/s_home.dart';
 import 'package:es3_frontend/common/screen/s_login.dart';
 import 'package:es3_frontend/common/screen/s_mypage.dart';
+import 'package:es3_frontend/common/screen/s_sign_up.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -47,6 +48,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => LoginScreen(),
+    ),
+    GoRoute(
+      path: '/sign-up',
+      builder: (context, state) => SignUpScreen(),
     ),
   ],
 );

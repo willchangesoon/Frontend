@@ -7,6 +7,7 @@ class DefaultLayout extends StatefulWidget {
   final Widget child;
   final bool showBottomNav;
   final bool showAppBarBtnBack;
+  final bool appBarColor;
 
   const DefaultLayout({
     super.key,
@@ -14,6 +15,7 @@ class DefaultLayout extends StatefulWidget {
     this.title,
     this.showBottomNav = true,
     this.showAppBarBtnBack = false,
+    this.appBarColor = false,
   });
 
   @override
@@ -45,7 +47,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
 
   renderAppBar() {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: widget.appBarColor ?  MAIN_COLOR : Colors.white,
       leading: widget.showAppBarBtnBack ? null : Icon(Icons.logo_dev_outlined),
       title: widget.title != null
           ? Text(
@@ -54,7 +56,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
             )
           : null,
       centerTitle: true,
-      foregroundColor: Colors.black,
+      foregroundColor: widget.appBarColor ? Colors.white : Colors.black,
       actions: [
         IconButton(
           onPressed: () {},

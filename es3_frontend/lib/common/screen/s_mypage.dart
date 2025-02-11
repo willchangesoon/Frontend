@@ -6,13 +6,21 @@ class MyPageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextButton(
-        child: Text('login'),
-        onPressed: () {
-          context.push('/login');
-        },
-      ),
+    return Column(
+      children: [
+        TextButton(
+          child: Text('login'),
+          onPressed: () {
+            context.push('/login');
+          },
+        ),
+        TextButton(
+          child: Text('sign up'),
+          onPressed: () {
+            context.push('/sign-up');
+          },
+        ),
+      ],
     );
   }
 }
