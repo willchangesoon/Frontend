@@ -32,7 +32,7 @@
 //               ),
 //               Container(height: 10.0,),
 //               GestureDetector(
-//                 child: Image.asset('images/login/google_login.png'),
+//                 child: Image.asset('images/login/google.png'),
 //                 onTap: () async {
 //                   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 //                   print('구글로 로그인 성공 ${googleUser}}');
