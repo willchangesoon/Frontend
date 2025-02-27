@@ -1,15 +1,25 @@
+import 'package:es3_frontend/common/layout/default_layout.dart';
+import 'package:es3_frontend/common/provider/router.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  runApp(ProviderScope(child: App()));
+}
 
-  // runApp() 호출 전 Flutter SDK 초기화
-  KakaoSdk.init(
-    nativeAppKey: 'a4f326492511110af63a97490ab9c839',
-    javaScriptAppKey: '4421fd8653c4ef00df23eef12cc354b2',
-  );
-  runApp(App());
+class App extends ConsumerWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
+      // home: DefaultLayout(),
+      routerConfig: router,
+    );
+  }
 }

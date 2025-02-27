@@ -77,7 +77,7 @@
     <key>GIDClientID</key>
     <string>231534416234-5cl3t5kf1jekfttq3cf0jks0s8l4nq2t.apps.googleusercontent.com</string>
     <key>naverServiceAppUrlScheme</key>
-    <string>socialloginapp</string>
+    <string>naverUrlScheme</string>
     <key>naverConsumerKey</key>
     <string>JIjhTmRMlTRaCF5yTiqf</string>
     <key>naverConsumerSecret</key>
