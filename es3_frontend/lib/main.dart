@@ -18,8 +18,12 @@ class App extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
+      theme: ThemeData(
+        fontFamily: 'GmarketSans'
+      ),
       // home: DefaultLayout(),
       routerConfig: router,
     );
   }
 }
+

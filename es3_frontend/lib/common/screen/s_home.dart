@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           MainCarousel(),
           const SizedBox(height: 10),
           mainOptions(),
-          const SizedBox(height: 40),
+          const SizedBox(height: 20),
           listMenu()
         ],
       ),

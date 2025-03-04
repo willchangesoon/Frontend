@@ -27,7 +27,10 @@ class MainOptionsButton extends StatelessWidget {
             child: Image.asset(this.image),
           ),
         ),
-        Text('${this.title}')
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text('${this.title}', style: TextStyle(fontSize: 12)),
+        )
       ],
     );
   }

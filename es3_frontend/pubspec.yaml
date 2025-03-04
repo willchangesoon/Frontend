@@ -64,10 +64,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/login/
-    - images/carousel/
-    - images/options/
-    - images/mypage/
+    - assets/images/login/
+    - assets/images/carousel/
+    - assets/images/options/
+    - assets/images/mypage/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -93,3 +93,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: GmarketSans
+      fonts:
+        - asset: assets/fonts/GmarketSansTTFBold.ttf
+          weight: 700
+        - asset: assets/fonts/GmarketSansTTFMedium.ttf
+          weight: 500
+        - asset: assets/fonts/GmarketSansTTFLight.ttf
+          weight: 300
