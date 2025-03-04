@@ -9,6 +9,8 @@ import 'package:es3_frontend/common/screen/s_sign_up.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../screen/s_setting.dart';
+
 final routerProvider = Provider((ref) {
   return router;
 });
@@ -18,7 +20,10 @@ final GoRouter router = GoRouter(
   routes: [
     ShellRoute(
       builder: (context, state, child) {
+        final showAppBarBtnBack = state.uri.toString() == '/mypage/setting';
         return DefaultLayout(
+          showAppBarBtnBack: showAppBarBtnBack,
+          title: showAppBarBtnBack ? 'Setting' : null,
           child: child,
         );
       },
@@ -42,6 +47,12 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/mypage',
           builder: (context, state) => MyPageScreen(),
+          routes: [
+            GoRoute(
+              path: 'setting',
+              builder: (context, state) => SettingScreen(),
+            ),
+          ],
         ),
       ],
     ),

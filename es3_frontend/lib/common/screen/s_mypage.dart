@@ -1,5 +1,6 @@
 import 'package:es3_frontend/common/component/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../products/model/product.dart';
 
@@ -60,15 +61,13 @@ class _MyPageScreenState extends State<MyPageScreen> {
       padding: const EdgeInsets.all(10.0),
       child: SingleChildScrollView(
         child: Column(
+          spacing: 10,
           children: [
             _userInfo(),
             Divider(),
-            SizedBox(height: 20),
             _history(),
-            SizedBox(height: 20),
             Divider(),
             _orderStatus(),
-            SizedBox(height: 20),
             Divider(),
             _recentlyViewed(),
             Divider(),
@@ -99,7 +98,9 @@ class _MyPageScreenState extends State<MyPageScreen> {
           ],
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.push('/mypage/setting');
+          },
           icon: Icon(Icons.settings),
         ),
       ],
@@ -108,27 +109,36 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
   Widget _history() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Column(
           children: [
             Image.asset('images/mypage/orderlist.png', height: 32),
-            Text('Orders'),
+            Text(
+              'Orders',
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            ),
             Text(
               'see more',
-              style: TextStyle(
-                color: Color(0xff7DAA93),
-              ),
+              style: TextStyle(color: Color(0xff7DAA93), fontSize: 12),
             ),
           ],
         ),
         Column(
           children: [
             Image.asset('images/mypage/point.png', height: 32),
-            Text('Point'),
+            Text(
+              'Point',
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            ),
             Text(
               '22000',
               style: TextStyle(
+                fontSize: 12,
                 color: Color(0xff7DAA93),
               ),
             ),
@@ -137,10 +147,16 @@ class _MyPageScreenState extends State<MyPageScreen> {
         Column(
           children: [
             Image.asset('images/mypage/coupon.png', height: 32),
-            Text('Coupon'),
+            Text(
+              'Coupon',
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            ),
             Text(
               '8',
               style: TextStyle(
+                fontSize: 12,
                 color: Color(0xff7DAA93),
               ),
             ),
@@ -149,11 +165,17 @@ class _MyPageScreenState extends State<MyPageScreen> {
         Column(
           children: [
             Image.asset('images/mypage/review.png', height: 32),
-            Text('Review'),
+            Text(
+              'Review',
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            ),
             Text(
               '8',
               style: TextStyle(
                 color: Color(0xff7DAA93),
+                fontSize: 12,
               ),
             ),
           ],
@@ -274,6 +296,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
     return Container(
       alignment: Alignment.centerLeft,
       child: Column(
+        spacing: 5,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(

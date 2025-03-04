@@ -47,8 +47,14 @@ class _DefaultLayoutState extends State<DefaultLayout> {
 
   renderAppBar() {
     return AppBar(
-      backgroundColor: widget.appBarColor ?  MAIN_COLOR : Colors.white,
-      leading: widget.showAppBarBtnBack ? null : Icon(Icons.logo_dev_outlined),
+      backgroundColor: widget.appBarColor ? MAIN_COLOR : Colors.white,
+      leading: widget.showAppBarBtnBack
+          ? BackButton(
+              onPressed: () {
+                context.pop();
+              },
+            )
+          : Icon(Icons.logo_dev_outlined),
       title: widget.title != null
           ? Text(
               widget.title!,
