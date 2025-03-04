@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
 
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,7 +41,11 @@ class SettingScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Update Profile'),
-            IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
+            IconButton(
+                onPressed: () {
+                  context.push('/mypage/setting/update-profile');
+                },
+                icon: Icon(Icons.chevron_right))
           ],
         ),
         Row(

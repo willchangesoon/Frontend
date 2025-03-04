@@ -6,6 +6,7 @@ import 'package:es3_frontend/common/screen/s_home.dart';
 import 'package:es3_frontend/common/screen/s_login.dart';
 import 'package:es3_frontend/common/screen/s_mypage.dart';
 import 'package:es3_frontend/common/screen/s_sign_up.dart';
+import 'package:es3_frontend/common/screen/s_update_profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,10 +21,20 @@ final GoRouter router = GoRouter(
   routes: [
     ShellRoute(
       builder: (context, state, child) {
-        final showAppBarBtnBack = state.uri.toString() == '/mypage/setting';
+        final String currentPath = state.uri.toString();
+
+        final Map<String, Map<String, dynamic>> routeSettings = {
+          '/mypage/setting': {'title': 'Setting', 'showAppBarBtnBack': true},
+          '/mypage/setting/update-profile': {'title': 'Update Profile', 'showAppBarBtnBack': true},
+          '/mypage/manage-address': {'title': 'Manage Address', 'showAppBarBtnBack': true},
+        };
+
+        final showAppBarBtnBack = routeSettings[currentPath]?['showAppBarBtnBack'] ?? false;
+        final title = routeSettings[currentPath]?['title'];
+
         return DefaultLayout(
           showAppBarBtnBack: showAppBarBtnBack,
-          title: showAppBarBtnBack ? 'Setting' : null,
+          title: title,
           child: child,
         );
       },
@@ -51,6 +62,12 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: 'setting',
               builder: (context, state) => SettingScreen(),
+              routes: [
+                GoRoute(
+                  path: 'update-profile',
+                  builder: (context, state) => UpdateProfileScreen(),
+                ),
+              ]
             ),
           ],
         ),
