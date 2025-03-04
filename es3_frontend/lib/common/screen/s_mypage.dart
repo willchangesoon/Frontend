@@ -1,27 +1,80 @@
+import 'package:es3_frontend/common/component/product_card.dart';
 import 'package:flutter/material.dart';
 
-class MyPageScreen extends StatelessWidget {
+import '../../products/model/product.dart';
+
+class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
+
+  @override
+  State<MyPageScreen> createState() => _MyPageScreenState();
+}
+
+class _MyPageScreenState extends State<MyPageScreen> {
+  final List<Product> products = [
+    Product(
+      imageUrl: "assets/images/sample/img.png",
+      title: "하이브",
+      subtitle: "니트 스판 바디수트",
+      price: "38,000",
+      discount: "10%",
+      rating: 4.8,
+    ),
+    Product(
+      imageUrl: "assets/images/sample/img.png",
+      title: "화이트걸",
+      subtitle: "라이트 탱크탑",
+      price: "38,000",
+      discount: null,
+      rating: 4.6,
+    ),
+    Product(
+      imageUrl: "assets/images/sample/img.png",
+      title: "니스바",
+      subtitle: "순면 라인 나시",
+      price: "18,000",
+      discount: "20%",
+      rating: 4.4,
+    ),
+    Product(
+      imageUrl: "assets/images/sample/img.png",
+      title: "순라나",
+      subtitle: "데일리로 입기 좋은 반팔",
+      price: "18,000",
+      discount: null,
+      rating: 4.5,
+    ),
+    Product(
+      imageUrl: "assets/images/sample/img.png",
+      title: "하이브",
+      subtitle: "니트 스판 바디수트",
+      price: "38,000",
+      discount: "10%",
+      rating: 4.8,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Column(
-        children: [
-          _userInfo(),
-          Divider(),
-          SizedBox(height: 20),
-          _history(),
-          SizedBox(height: 20),
-          Divider(),
-          SizedBox(height: 20),
-          _orderStatus(),
-          SizedBox(height: 30),
-          _recentlyViewed(),
-          Divider(),
-          _csMenus()
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            _userInfo(),
+            Divider(),
+            SizedBox(height: 20),
+            _history(),
+            SizedBox(height: 20),
+            Divider(),
+            _orderStatus(),
+            SizedBox(height: 20),
+            Divider(),
+            _recentlyViewed(),
+            Divider(),
+            _csMenus()
+          ],
+        ),
       ),
     );
   }
@@ -196,6 +249,23 @@ class MyPageScreen extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 20),
+        SizedBox(
+          height: 270,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return ProductCard(
+                imageUrl: products[index].imageUrl,
+                title: products[index].title,
+                subtitle: products[index].subtitle,
+                price: products[index].price,
+                discount: products[index].discount,
+                rating: products[index].rating,
+              );
+            },
+          ),
+        )
       ],
     );
   }
