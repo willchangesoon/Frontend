@@ -6,7 +6,7 @@ import '../const/colors.dart';
 
 class SignUpSecondForm extends StatefulWidget {
   final VoidCallback goBack;
-  final VoidCallback onNext;
+  final ValueChanged<Map<String, dynamic>> onNext;
 
   const SignUpSecondForm({
     super.key,
@@ -20,13 +20,53 @@ class SignUpSecondForm extends StatefulWidget {
 
 class _SignUpSecondFormState extends State<SignUpSecondForm> {
   final _formKey = GlobalKey<FormState>();
+  final representativeNameController = TextEditingController();
+  final representativeContactController = TextEditingController();
+  final businessNameController = TextEditingController();
+  final registeredBusinessNumberController = TextEditingController();
+  final addressController = TextEditingController();
+  final taxEmailController = TextEditingController();
+
   final sellerType = ['individual', 'corporate'];
-  bool _isButtonEnabled = true; // 버튼 상태 관리
+  bool _isButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    representativeNameController.addListener(_updateButtonState);
+    representativeContactController.addListener(_updateButtonState);
+    businessNameController.addListener(_updateButtonState);
+    registeredBusinessNumberController.addListener(_updateButtonState);
+    addressController.addListener(_updateButtonState);
+    taxEmailController.addListener(_updateButtonState);
+  }
+
+  void _updateButtonState() {
+    final isValid = representativeNameController.text.isNotEmpty &&
+        representativeContactController.text.isNotEmpty &&
+        businessNameController.text.isNotEmpty &&
+        registeredBusinessNumberController.text.isNotEmpty &&
+        addressController.text.isNotEmpty &&
+        taxEmailController.text.isNotEmpty;
+    setState(() {
+      _isButtonEnabled = isValid;
+    });
+  }
+
+  @override
+  void dispose() {
+    representativeNameController.dispose();
+    representativeContactController.dispose();
+    businessNameController.dispose();
+    registeredBusinessNumberController.dispose();
+    addressController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      // autovalidateMode: AutovalidateMode.disabled,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,6 +107,7 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
           RequiredFormLabel(text: 'Business Information'),
           const SizedBox(height: 10),
           CustomTextFormField(
+            controller: representativeNameController,
             text: 'Representative Name',
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -77,6 +118,8 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
           ),
           const SizedBox(height: 10),
           CustomTextFormField(
+            controller: representativeContactController,
+            keyboardType: TextInputType.phone,
             text: 'Representative Contact',
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -87,6 +130,7 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
           ),
           const SizedBox(height: 10),
           CustomTextFormField(
+            controller: businessNameController,
             text: 'Business Name',
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -97,6 +141,7 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
           ),
           const SizedBox(height: 10),
           CustomTextFormField(
+            controller: registeredBusinessNumberController,
             text: 'Registered Business Number',
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -107,6 +152,7 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
           ),
           const SizedBox(height: 10),
           CustomTextFormField(
+            controller: addressController,
             text: 'Address',
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -117,6 +163,7 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
           ),
           const SizedBox(height: 10),
           CustomTextFormField(
+            controller: taxEmailController,
             text: 'Tax Email',
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -177,25 +224,27 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: ElevatedButton(
-                    onPressed: () {
-                      // if (!(_formKey.currentState!.validate())) {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(content: Text('Not Completed')),
-                      //   );
-                      // } else {
-                      //   widget.onNext();
-                      // }
-                      widget.onNext();
-                    },
+                    onPressed: _isButtonEnabled ? () {
+                      if (_formKey.currentState!.validate()) {
+                        final data = {
+                          "representativeName": representativeNameController.text,
+                          "representativeContact": representativeContactController.text,
+                          "businessName": businessNameController.text,
+                          "businessNumber": registeredBusinessNumberController.text,
+                          "businessAddress": addressController.text,
+                          "businessLicenseFile" : "fileTemp"
+                          // "taxEmail": taxEmailController.text,
+                        };
+                        widget.onNext(data);
+                      }
+                    } : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          _isButtonEnabled ? MAIN_COLOR : Color(0xfff5f5f5),
+                      backgroundColor: MAIN_COLOR,
                     ),
                     child: Text(
                       'Next',
                       style: TextStyle(
-                        color:
-                            _isButtonEnabled ? Colors.white : Color(0xffCCCCCC),
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

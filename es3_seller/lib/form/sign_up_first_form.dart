@@ -6,7 +6,7 @@ import '../const/colors.dart';
 
 class SignUpFirstForm extends StatefulWidget {
   final VoidCallback goBack;
-  final VoidCallback onNext;
+  final ValueChanged<Map<String, dynamic>> onNext;
 
   const SignUpFirstForm({
     super.key,
@@ -20,17 +20,64 @@ class SignUpFirstForm extends StatefulWidget {
 
 class _SignUpFirstFormState extends State<SignUpFirstForm> {
   final _formKey = GlobalKey<FormState>();
-  bool _isButtonEnabled = true; // 버튼 상태 관리
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final nameController = TextEditingController();
+  final mobileController = TextEditingController();
+  final marketNameController = TextEditingController();
+  final customerSupportController = TextEditingController();
+
+  bool _isButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController.addListener(_updateButtonState);
+    passwordController.addListener(_updateButtonState);
+    confirmPasswordController.addListener(_updateButtonState);
+    nameController.addListener(_updateButtonState);
+    mobileController.addListener(_updateButtonState);
+    marketNameController.addListener(_updateButtonState);
+    customerSupportController.addListener(_updateButtonState);
+  }
+
+  void _updateButtonState() {
+    final isValid = emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty &&
+        confirmPasswordController.text.isNotEmpty &&
+        nameController.text.isNotEmpty &&
+        mobileController.text.isNotEmpty &&
+        marketNameController.text.isNotEmpty &&
+        customerSupportController.text.isNotEmpty &&
+        (passwordController.text == confirmPasswordController.text);
+    setState(() {
+      _isButtonEnabled = isValid;
+    });
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    nameController.dispose();
+    mobileController.dispose();
+    marketNameController.dispose();
+    customerSupportController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               'Basic Info',
               style: TextStyle(fontSize: 16),
@@ -38,27 +85,35 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
           ),
           RequiredFormLabel(text: 'Account Info'),
           CustomTextFormField(
+              controller: emailController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter email';
                 }
                 return null;
               },
               text: 'email'),
           const SizedBox(height: 10),
           CustomTextFormField(
+            obscureText: true,
+              controller: passwordController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter password';
                 }
                 return null;
               },
               text: 'password'),
           const SizedBox(height: 10),
           CustomTextFormField(
+              obscureText: true,
+              controller: confirmPasswordController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please confirm password';
+                }
+                if (value != passwordController.text) {
+                  return 'Passwords do not match';
                 }
                 return null;
               },
@@ -66,18 +121,21 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
           const SizedBox(height: 20),
           RequiredFormLabel(text: 'Seller Info'),
           CustomTextFormField(
+              controller: nameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter name';
                 }
                 return null;
               },
               text: 'name'),
           const SizedBox(height: 10),
           CustomTextFormField(
+              keyboardType: TextInputType.phone,
+              controller: mobileController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter mobile';
                 }
                 return null;
               },
@@ -85,18 +143,21 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
           const SizedBox(height: 20),
           RequiredFormLabel(text: 'Market Info'),
           CustomTextFormField(
+              controller: marketNameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter market name';
                 }
                 return null;
               },
               text: 'market name'),
           const SizedBox(height: 10),
           CustomTextFormField(
+              keyboardType: TextInputType.phone,
+              controller: customerSupportController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter customer support number';
                 }
                 return null;
               },
@@ -108,17 +169,14 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: ElevatedButton(
-                    onPressed: () {
-                      widget.goBack();
-                    },
+                    onPressed: widget.goBack,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          _isButtonEnabled ? Color(0xff999999) : Color(0xfff5f5f5),
+                      backgroundColor: Color(0xff999999),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Go Back',
                       style: TextStyle(
-                        color: _isButtonEnabled ? Colors.white : Color(0xffCCCCCC),
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -129,24 +187,30 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: ElevatedButton(
-                    onPressed: () {
-                      // if (!(_formKey.currentState!.validate())) {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(content: Text('Not Completed')),
-                      //   );
-                      // } else {
-                      //   widget.onNext();
-                      // }
-                      widget.onNext();
-                    },
+                    onPressed: _isButtonEnabled
+                        ? () {
+                            if (_formKey.currentState!.validate()) {
+                              final data = {
+                                "email": emailController.text,
+                                "password": passwordController.text,
+                                "name": nameController.text,
+                                "mobile": mobileController.text,
+                              };
+                              widget.onNext(data);
+                            }
+                          }
+                        : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          _isButtonEnabled ? MAIN_COLOR : Color(0xfff5f5f5),
+                      backgroundColor: _isButtonEnabled
+                          ? MAIN_COLOR
+                          : const Color(0xfff5f5f5),
                     ),
                     child: Text(
                       'Next',
                       style: TextStyle(
-                        color: _isButtonEnabled ? Colors.white : Color(0xffCCCCCC),
+                        color: _isButtonEnabled
+                            ? Colors.white
+                            : const Color(0xffCCCCCC),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

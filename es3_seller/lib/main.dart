@@ -1,30 +1,29 @@
-import 'package:es3_seller/const/colors.dart';
-import 'package:es3_seller/form/sign_up_first_form.dart';
-import 'package:es3_seller/screen/s_sign_up_finish.dart';
+import 'package:es3_seller/provider/router_provider.dart';
 import 'package:es3_seller/screen/s_signup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(App());
+  runApp(
+    ProviderScope(
+      child:  App(),
+    ),
+  );
 }
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+  final router = ref.watch(routerProvider);
+    return MaterialApp.router(
       theme: ThemeData(
         fontFamily: 'GmarketSans',
         useMaterial3: true,
         colorSchemeSeed: Colors.white,
       ),
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: SignUpScreen(),
-        ),
-      ),
+      routerConfig: router,
     );
   }
 }

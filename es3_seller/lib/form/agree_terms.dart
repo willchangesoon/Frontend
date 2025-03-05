@@ -168,7 +168,7 @@ class _AgreeTermsState extends State<AgreeTerms> {
                     _isButtonEnabled() ? MAIN_COLOR : Color(0xfff5f5f5),
                   ),
                   child: Text(
-                    'Next',
+                    'Complete',
                     style: TextStyle(
                       color: _isButtonEnabled() ? Colors.white : Color(0xffCCCCCC),
                       fontWeight: FontWeight.bold,
