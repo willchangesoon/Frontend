@@ -19,8 +19,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   AuthNotifier({required this.dio, required this.storage}) : super(AuthState());
 
-  // final Dio _dio = Dio();
-
   Future<void> login(String email, String password) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
