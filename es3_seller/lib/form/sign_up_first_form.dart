@@ -95,7 +95,7 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
               text: 'email'),
           const SizedBox(height: 10),
           CustomTextFormField(
-            obscureText: true,
+              obscureText: true,
               controller: passwordController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -168,10 +168,15 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ElevatedButton(
+                  child: TextButton(
                     onPressed: widget.goBack,
-                    style: ElevatedButton.styleFrom(
+                    style: TextButton.styleFrom(
                       backgroundColor: Color(0xff999999),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
                     ),
                     child: const Text(
                       'Go Back',
@@ -186,31 +191,30 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ElevatedButton(
-                    onPressed: _isButtonEnabled
-                        ? () {
-                            if (_formKey.currentState!.validate()) {
-                              final data = {
-                                "email": emailController.text,
-                                "password": passwordController.text,
-                                "name": nameController.text,
-                                "mobile": mobileController.text,
-                              };
-                              widget.onNext(data);
-                            }
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _isButtonEnabled
-                          ? MAIN_COLOR
-                          : const Color(0xfff5f5f5),
+                  child: TextButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        final data = {
+                          "email": emailController.text,
+                          "password": passwordController.text,
+                          "name": nameController.text,
+                          "mobile": mobileController.text,
+                        };
+                        widget.onNext(data);
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: MAIN_COLOR.withAlpha(128),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
                     ),
                     child: Text(
                       'Next',
                       style: TextStyle(
-                        color: _isButtonEnabled
-                            ? Colors.white
-                            : const Color(0xffCCCCCC),
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

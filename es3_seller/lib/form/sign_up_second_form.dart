@@ -200,20 +200,20 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      widget.goBack();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _isButtonEnabled
-                          ? Color(0xff999999)
-                          : Color(0xfff5f5f5),
+                  child: TextButton(
+                    onPressed: widget.goBack,
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color(0xff999999),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Go Back',
                       style: TextStyle(
-                        color:
-                            _isButtonEnabled ? Colors.white : Color(0xffCCCCCC),
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -223,7 +223,7 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ElevatedButton(
+                  child: TextButton(
                     onPressed: _isButtonEnabled ? () {
                       if (_formKey.currentState!.validate()) {
                         final data = {
@@ -238,13 +238,18 @@ class _SignUpSecondFormState extends State<SignUpSecondForm> {
                         widget.onNext(data);
                       }
                     } : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MAIN_COLOR,
+                    style: TextButton.styleFrom(
+                      backgroundColor: MAIN_COLOR.withAlpha(128),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
                     ),
                     child: Text(
                       'Next',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

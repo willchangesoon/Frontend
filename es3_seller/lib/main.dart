@@ -1,5 +1,5 @@
 import 'package:es3_seller/provider/router_provider.dart';
-import 'package:es3_seller/screen/s_signup.dart';
+import 'package:es3_seller/screen/s_sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

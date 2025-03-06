@@ -158,10 +158,15 @@ class _SignUpThirdFormState extends State<SignUpThirdForm> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ElevatedButton(
+                  child: TextButton(
                     onPressed: widget.goBack,
-                    style: ElevatedButton.styleFrom(
+                    style: TextButton.styleFrom(
                       backgroundColor: Color(0xff999999),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
                     ),
                     child: Text(
                       'Go Back',
@@ -176,7 +181,7 @@ class _SignUpThirdFormState extends State<SignUpThirdForm> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ElevatedButton(
+                  child: TextButton(
                     onPressed:_isButtonEnabled ?  () {
                       if (_formKey.currentState!.validate()) {
                         final selectedBank = _bankFieldKey.currentState?.value;
@@ -190,13 +195,18 @@ class _SignUpThirdFormState extends State<SignUpThirdForm> {
                         widget.onNext(bankInfo);
                       }
                     } : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MAIN_COLOR,
+                    style: TextButton.styleFrom(
+                      backgroundColor: MAIN_COLOR.withAlpha(128),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
                     ),
                     child: Text(
                       'Next',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

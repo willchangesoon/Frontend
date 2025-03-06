@@ -134,12 +134,17 @@ class _AgreeTermsState extends State<AgreeTerms> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: () {
                     widget.goBack();
                   },
-                  style: ElevatedButton.styleFrom(
+                  style: TextButton.styleFrom(
                     backgroundColor: Color(0xff999999),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
                   ),
                   child: Text(
                     'Go Back',
@@ -154,7 +159,7 @@ class _AgreeTermsState extends State<AgreeTerms> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: () {
                     if (!_isButtonEnabled()) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -163,14 +168,18 @@ class _AgreeTermsState extends State<AgreeTerms> {
                     }
                     widget.onComplete();
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                    _isButtonEnabled() ? MAIN_COLOR : Color(0xfff5f5f5),
+                  style: TextButton.styleFrom(
+                    backgroundColor: MAIN_COLOR.withAlpha(128),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
                   ),
                   child: Text(
                     'Complete',
                     style: TextStyle(
-                      color: _isButtonEnabled() ? Colors.white : Color(0xffCCCCCC),
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
