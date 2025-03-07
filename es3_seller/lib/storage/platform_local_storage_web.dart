@@ -10,7 +10,7 @@ class PlatformLocalStorage extends IPlatformLocalStorage {
   }
 
   @override
-  void setItem({required String key, required String value}) {
+  Future<void> setItem({required String key, required String value}) async {
     html.window.localStorage[key] = value;
   }
 

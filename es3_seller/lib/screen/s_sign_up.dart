@@ -8,7 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../form/sign_up_first_form.dart';
-import '../provider/auth_provider.dart';
+import '../user/provider/auth_provider.dart';
+import '../user/user_model.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -60,14 +61,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           goBack: () => setState(() => signUpStep = 2),
           onComplete: () async {
             if (basicInfo != null && businessInfo != null && bankInfo != null) {
-              bool result = await ref.read(authProvider.notifier).signUp(
-                    basicInfo: basicInfo!,
+              UserModelBase result =
+                  await ref.read(authProvider.notifier).signUp(
+                        basicInfo: basicInfo!,
                     businessInfo: businessInfo!,
                     bankInfo: bankInfo!,
                   );
-              if (result) {
-                context.go('/sign-up-finish');
-              }
+              context.go('/sign-up-finish');
             }
           },
         );

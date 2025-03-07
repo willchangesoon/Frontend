@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
-import '../component/state_card.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../component/state_card.dart';
+import '../user/provider/auth_provider.dart';
+
+class HomeScreen extends ConsumerStatefulWidget {
   HomeScreen({super.key});
 
+  @override
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final List<String> marketMenu = [
     '배너 관리',
     '기타 정보 관리',
@@ -21,6 +29,8 @@ class HomeScreen extends StatelessWidget {
     '취소 관리',
     '반품 관리',
   ];
+
+  final List<String> accountMenu = ['로그아웃'];
 
   @override
   Widget build(BuildContext context) {
@@ -208,6 +218,8 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 // 주문 관리
                 _buildSidebarSection('주문 관리', orderMenu),
+                const SizedBox(height: 16),
+                _buildSidebarSection('계정 관리', accountMenu),
               ],
             ),
           ),
@@ -229,9 +241,10 @@ class HomeScreen extends StatelessWidget {
           .map(
             (e) => ListTile(
           title: Text(e, style: const TextStyle(color: Colors.white70)),
-          onTap: () {
-            // 각 메뉴 선택 시 로직
-          },
+              onTap: () async {
+                // 각 메뉴 선택 시 로직
+                await ref.read(authProvider.notifier).logout();
+              },
         ),
       )
           .toList(),

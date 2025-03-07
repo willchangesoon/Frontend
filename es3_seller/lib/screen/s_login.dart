@@ -1,10 +1,12 @@
+import 'package:es3_seller/user/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../component/custom_text_form_field.dart';
 import '../const/colors.dart';
-import '../provider/auth_provider.dart';
+import '../user/provider/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -34,6 +36,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomTextFormField(
+                      controller: emailController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter email';
@@ -43,6 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 10),
                     CustomTextFormField(
+                      controller: passwordController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter password';
@@ -56,9 +60,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 0),
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              ref.read(authProvider.notifier).login(emailController.text, passwordController.text);
+                              print(
+                                  '${emailController.text}, ${passwordController.text}');
+                              UserModelBase result = await ref
+                                  .read(authProvider.notifier)
+                                  .login(emailController.text,
+                                      passwordController.text);
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -66,6 +75,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           child: Text(
                             'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            GoRouter.of(context).push('/sign-up');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MAIN_COLOR,
+                          ),
+                          child: Text(
+                            'Sign Up',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

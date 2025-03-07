@@ -4,7 +4,7 @@ import 'package:es3_seller/storage/platform_local_storage_interface.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../const/data.dart';
-import 'auth_provider.dart';
+import '../user/provider/auth_provider.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
@@ -29,7 +29,6 @@ class CustomInterceptor extends Interceptor {
       options.headers.remove('accessToken');
 
       final token = await storage.getItem(key: ACCESS_TOKEN_KEY);
-
       options.headers.addAll({'authorization': 'Bearer $token'});
     }
 
@@ -47,11 +46,11 @@ class CustomInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     print('[ERR] [${err.requestOptions.method}] [${err.requestOptions.uri}]');
-    print('${err.response}');
+    print('err response ${err}');
     final refreshToken = await storage.getItem(key: REFRESH_TOKEN_KEY);
 
     if (refreshToken == null) {
-      handler.reject(err);
+      return handler.reject(err);
     }
 
     final isStatus401 = err.response?.statusCode == 401;
@@ -79,7 +78,7 @@ class CustomInterceptor extends Interceptor {
       } catch (e, stack) {
         print(e);
         print(stack);
-        ref.read(authProvider.notifier).logout();
+        await ref.read(authProvider.notifier).logout();
         return handler.reject(err);
       }
     }
