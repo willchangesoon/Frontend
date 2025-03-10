@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:es3_seller/exception/exception_response.dart';
 import 'package:es3_seller/storage/local_storage_provider.dart';
 import 'package:es3_seller/storage/platform_local_storage_interface.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,23 +49,26 @@ class CustomInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     print('[ERR] [${err.requestOptions.method}] [${err.requestOptions.uri}]');
-    print('err response ${err}');
+    print('err response -> ${err.response}');
     final refreshToken = await storage.getItem(key: REFRESH_TOKEN_KEY);
 
     if (refreshToken == null) {
       return handler.reject(err);
     }
 
-    final isStatus401 = err.response?.statusCode == 401;
-    final isPathRefresh = err.requestOptions.path == '/auth/token';
+    final isStatus406 = err.response?.statusCode == 406;
+    final isPathRefresh =
+        err.requestOptions.path == '/user-v1/oauth/sellers/refresh';
+    ExceptionResponse exceptionResponse =
+        ExceptionResponse.fromJson(err.response!.data);
 
-    if (isStatus401 && !isPathRefresh) {
+    if (exceptionResponse.errorCode == 6001 && !isPathRefresh) {
       final dio = Dio();
       try {
         final resp = await dio.post(
-          'http://fe/auth/token',
-          options: Options(headers: {'authorization': 'Bearer $refreshToken'}),
-        );
+            'http://localhost:8080/user-v1/oauth/sellers/refresh',
+            data: jsonEncode({"refreshToken": refreshToken}),
+            options: Options(headers: {'Content-Type': 'application/json'}));
 
         final accessToken = resp.data['accessToken'];
 

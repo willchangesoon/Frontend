@@ -1,4 +1,3 @@
-import 'package:es3_seller/user/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,51 +54,43 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       text: 'password',
                       obscureText: true,
                     ),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              print(
-                                  '${emailController.text}, ${passwordController.text}');
-                              UserModelBase result = await ref
-                                  .read(authProvider.notifier)
-                                  .login(emailController.text,
-                                      passwordController.text);
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: MAIN_COLOR,
-                          ),
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await ref.read(authProvider.notifier).login(
+                                emailController.text, passwordController.text);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MAIN_COLOR,
+                        ),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            GoRouter.of(context).push('/sign-up');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: MAIN_COLOR,
-                          ),
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          GoRouter.of(context).push('/sign-up');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MAIN_COLOR,
+                        ),
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
