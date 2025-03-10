@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:es3_seller/product/screen/s_create_product_multistep.dart';
 import 'package:es3_seller/user/provider/auth_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,14 +30,14 @@ class UserProvider extends ChangeNotifier {
   FutureOr<String?> redirectLogic(BuildContext context, GoRouterState state) {
     final UserModelBase? user = ref.watch(authProvider);
     final loggingIn = state.matchedLocation == '/login';
-    print('user: ${user.runtimeType}');
+
     if (user == null) {
       return loggingIn ? null : '/login';
     }
 
-    if (user is UserModel) {
-      return loggingIn || state.matchedLocation == '/' ? null : '/login';
-    }
+    // if (user is UserModel) {
+    //   return loggingIn || state.matchedLocation == '/' ? null : '/login';
+    // }
 
     if (user is UserModelError) {
       return !loggingIn ? '/login' : null;
@@ -52,8 +53,16 @@ class UserProvider extends ChangeNotifier {
           builder: (context, state) => SignUpScreen(),
         ),
         GoRoute(
-            path: '/sign-up-finish',
-            builder: (context, state) => SignUpFinishScreen()),
-        GoRoute(path: '/login', builder: (context, state) => LoginScreen())
+          path: '/sign-up-finish',
+          builder: (context, state) => SignUpFinishScreen(),
+        ),
+        GoRoute(
+          path: '/login',
+          builder: (context, state) => LoginScreen(),
+        ),
+        GoRoute(
+          path: '/create-product',
+          builder: (context, state) => CreateProductMultiStepScreen(),
+        ),
       ];
 }

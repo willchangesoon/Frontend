@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String text;
@@ -20,6 +21,11 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       keyboardType: keyboardType,
+      inputFormatters: <TextInputFormatter>[
+        keyboardType == TextInputType.number
+            ? FilteringTextInputFormatter.digitsOnly
+            : FilteringTextInputFormatter.singleLineFormatter
+      ],
       controller: controller,
       validator: validator,
       obscureText: obscureText,

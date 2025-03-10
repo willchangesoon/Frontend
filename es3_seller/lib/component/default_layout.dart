@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DefaultLayout extends StatelessWidget {
   final Widget child;
 
   const DefaultLayout({Key? key, required this.child}) : super(key: key);
 
-  // 사이드바 구성 (여러 페이지에서 공통으로 사용)
   Widget _buildSidebar(BuildContext context) {
-    final List<String> marketMenu = ['배너 관리', '기타 정보 관리'];
-    final List<String> productMenu = ['상품 등록', '상품 목록'];
-    final List<String> orderMenu = [
-      '전체 주문 목록',
-      '배송 관리',
-      '발송 관리',
-      '취소 관리',
-      '반품 관리'
-    ];
-    final List<String> accountMenu = ['계정 관리', '로그아웃'];
+    final Map<String, String> marketMenuRoutes = {
+      '배너 관리': '/banner-management',
+      '기타 정보 관리': '/general-info',
+    };
+    final Map<String, String> productMenuRoutes = {
+      '상품 등록': '/create-product',
+      '상품 목록': ''
+    };
+    final Map<String, String> orderMenuRoutes = {
+      '전체 주문 목록': '',
+      '배송 관리': '',
+      '발송 관리': '',
+      '취소 관리': '',
+      '반품 관리': ''
+    };
+    final Map<String, String> accountMenuRoutes = {'계정 관리': '', '로그아웃': ''};
 
     return Container(
       color: Colors.grey[900],
@@ -35,13 +41,13 @@ class DefaultLayout extends StatelessWidget {
                     style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                 ),
-                _buildSidebarSection('마켓 관리', marketMenu),
+                _buildSidebarSection(context, '마켓 관리', marketMenuRoutes),
                 const SizedBox(height: 16),
-                _buildSidebarSection('상품 관리', productMenu),
+                _buildSidebarSection(context, '상품 관리', productMenuRoutes),
                 const SizedBox(height: 16),
-                _buildSidebarSection('주문 관리', orderMenu),
+                _buildSidebarSection(context, '주문 관리', orderMenuRoutes),
                 const SizedBox(height: 16),
-                _buildSidebarSection('계정 관리', accountMenu),
+                _buildSidebarSection(context, '계정 관리', accountMenuRoutes),
               ],
             ),
           ),
@@ -50,7 +56,8 @@ class DefaultLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildSidebarSection(String title, List<String> items) {
+  Widget _buildSidebarSection(
+      BuildContext context, String title, Map<String, String> items) {
     return ExpansionTile(
       initiallyExpanded: false,
       title: Text(
@@ -60,16 +67,17 @@ class DefaultLayout extends StatelessWidget {
       ),
       iconColor: Colors.white,
       collapsedIconColor: Colors.white,
-      children: items
-          .map(
-            (e) => ListTile(
-              title: Text(e, style: const TextStyle(color: Colors.white70)),
-              onTap: () {
-                // 각 메뉴 선택 시 라우팅이나 로직 처리
-              },
-            ),
-          )
-          .toList(),
+      children: items.entries.map((entry) {
+        return ListTile(
+          title: Text(
+            entry.key,
+            style: const TextStyle(color: Colors.white70),
+          ),
+          onTap: () {
+            context.push(entry.value);
+          },
+        );
+      }).toList(),
     );
   }
 
@@ -83,31 +91,34 @@ class DefaultLayout extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // 로고 및 검색창
-          Row(
-            children: [
-              Text(
-                '에이블리 어드민',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800],
+          GestureDetector(
+            onTap: () => context.go('/'),
+            child: Row(
+              children: [
+                Text(
+                  '어드민',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[800],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 20),
-              SizedBox(
-                width: 200,
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search...',
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 200,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           // 우측 프로필 및 알림
           Row(
