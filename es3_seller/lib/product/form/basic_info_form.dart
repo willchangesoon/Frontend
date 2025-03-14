@@ -43,7 +43,8 @@ class _BasicInfoFormState extends ConsumerState<BasicInfoForm> {
 
   Future<void> _fetchCategories() async {
     try {
-      final response = await ref.read(dioProvider)
+      final response = await ref
+          .read(dioProvider)
           .get('http://localhost:8080/order-v1/common/categories');
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
@@ -191,25 +192,26 @@ class _BasicInfoFormState extends ConsumerState<BasicInfoForm> {
           const DynamicOptionsForm(),
           const SizedBox(height: 30),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ElevatedButton(
-                onPressed: (){
+              FilledButton(
+                child: Text('Next'),
+                onPressed: () {
                   final data = {
                     "title": titleController.text,
                     "visibility": visibility,
                     "deliveryType": deliveryType,
                     "mainCategory": _selectedTopCategory!.name,
-                    "subCategory" : _selectedSubCategory?.name,
-                    "price" : priceController.text,
-                    "options" : ""
+                    "subCategory": _selectedSubCategory?.name,
+                    "price": priceController.text,
+                    "options": ""
                   };
                   widget.onNext(data);
                 },
-                child: Text('Next'),
               ),
             ],
           ),
+          const SizedBox(height: 30),
         ],
       ),
     );

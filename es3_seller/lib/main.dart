@@ -24,7 +24,7 @@ class App extends ConsumerWidget {
       theme: ThemeData(
         fontFamily: 'GmarketSans',
         useMaterial3: true,
-        colorSchemeSeed: Colors.white,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
       routerConfig: router,
     );

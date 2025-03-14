@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:go_router/go_router.dart';
 
 class ProductDescription extends StatelessWidget {
   final ValueChanged<String> onSubmit;
@@ -29,55 +28,61 @@ class ProductDescription extends StatelessWidget {
           Container(
             width: 700,
             color: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (!kIsWeb)
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        quill.QuillSimpleToolbar(
-                          controller: quillController,
-                          config: const quill.QuillSimpleToolbarConfig(),
-                        ),
-                      ],
+            child: Container(
+              decoration: BoxDecoration(border: Border.all()),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (!kIsWeb)
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          quill.QuillSimpleToolbar(
+                            controller: quillController,
+                            config: const quill.QuillSimpleToolbarConfig(),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                if (kIsWeb)
-                  quill.QuillSimpleToolbar(
-                    controller: quillController,
-                    config: const quill.QuillSimpleToolbarConfig(),
-                  ),
-                Divider(),
-                SizedBox(
-                  height: 500,
-                  child: quill.QuillEditor.basic(
-                    controller: quillController,
-                    config: const quill.QuillEditorConfig(),
-                  ),
-                )
-              ],
+                  if (kIsWeb)
+                    quill.QuillSimpleToolbar(
+                      controller: quillController,
+                      config: const quill.QuillSimpleToolbarConfig(),
+                    ),
+                  Divider(),
+                  SizedBox(
+                    height: 500,
+                    child: quill.QuillEditor.basic(
+                      controller: quillController,
+                      config: const quill.QuillEditorConfig(),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  goBack();
-                },
-                child: const Text('Back'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  print('${quillController.document}');
-                  onSubmit(jsonEncode(quillController.document.toDelta().toJson()));
-                },
-                child: Text('Submit'),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    goBack();
+                  },
+                  child: const Text('Back'),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    print('${quillController.document}');
+                    onSubmit(jsonEncode(
+                        quillController.document.toDelta().toJson()));
+                  },
+                  child: Text('Submit'),
+                ),
+              ],
+            ),
           ),
         ],
       ),

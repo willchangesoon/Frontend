@@ -1,16 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:es3_seller/component/default_layout.dart';
 import 'package:es3_seller/product/form/description.dart';
-import 'package:es3_seller/product/model/product.dart';
-import 'package:es3_seller/product/repository/product_repository.dart';
-import 'package:es3_seller/product/screen/product_image_step.dart';
-import 'package:es3_seller/provider/dio_provider.dart';
+import 'package:es3_seller/product/form/product_image_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../form/basic_info_form.dart';
 
@@ -84,37 +76,34 @@ class _CreateProductMultiStepScreenState
   }
 
   Future<void> _submitForm() async {
-    // 각 단계에서 받은 값들을 하나의 맵으로 합침
     final Map<String, dynamic> productData = {
       'title': basicInfo?['title'],
       'visibility': basicInfo?['visibility'],
       'deliveryType': basicInfo?['deliveryType'],
-      // 카테고리의 경우, CategorySelectionWidget에서 선택한 카테고리의 id를 기본 정보 맵에 포함시켰거나,
-      // 여기서 따로 _selectedTopCategory, _selectedSubCategory의 id 값을 넣을 수 있습니다.
-      'mainCategory': _selectedTopCategory?.id,
-      'subCategory': _selectedSubCategory?.id,
+      'mainCategory': basicInfo?['mainCategory'],
+      'subCategory': basicInfo?['subCategory'],
       'price': basicInfo?['price'],
-      // 이미지 정보는 images Map에 'mainImage'와 'additionalImages'라는 키로 저장했다고 가정
       'mainImage': images?['mainImage'],
       'additionalImages': images?['additionalImages'],
-      'description': description, // quill의 Delta JSON 문자열 혹은 변환된 포맷
-      // 옵션 정보 등 추가 데이터가 있다면 함께 추가
+      'description': description,
     };
 
-    try {
-      final response = await ref.read(productRepositoryProvider).createProduct(product: product);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        GoRouter.of(context).push('/home');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${response.statusCode}')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
+    print('${productData.toString()}');
+    //
+    // try {
+    //   final response = await ref.read(productRepositoryProvider).createProduct(product: product);
+    //   if (response.statusCode == 200 || response.statusCode == 201) {
+    //     GoRouter.of(context).push('/home');
+    //   } else {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text('Error: ${response.statusCode}')),
+    //     );
+    //   }
+    // } catch (e) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text('Error: $e')),
+    //   );
+    // }
   }
 
 

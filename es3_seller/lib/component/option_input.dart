@@ -56,7 +56,6 @@ class OptionInputWidgetState extends State<OptionInput> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 옵션명 입력 및 옵션 삭제 버튼
             Row(
               children: [
                 Expanded(

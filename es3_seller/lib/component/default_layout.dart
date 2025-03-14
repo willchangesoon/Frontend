@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,7 +26,7 @@ class DefaultLayout extends StatelessWidget {
     final Map<String, String> accountMenuRoutes = {'계정 관리': '', '로그아웃': ''};
 
     return Container(
-      color: Colors.grey[900],
+      // color: Colors.grey[900],
       height: double.infinity,
       child: SafeArea(
         child: SingleChildScrollView(
@@ -34,13 +35,14 @@ class DefaultLayout extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: Text(
-                    'MENU',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                if (!kIsWeb)
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 20),
+                    child: Text(
+                      'Menu',
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
-                ),
                 _buildSidebarSection(context, '마켓 관리', marketMenuRoutes),
                 const SizedBox(height: 16),
                 _buildSidebarSection(context, '상품 관리', productMenuRoutes),
@@ -62,16 +64,15 @@ class DefaultLayout extends StatelessWidget {
       initiallyExpanded: false,
       title: Text(
         title,
-        style:
-            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
-      iconColor: Colors.white,
-      collapsedIconColor: Colors.white,
+      // iconColor: Colors.white,
+      // collapsedIconColor: Colors.white,
       children: items.entries.map((entry) {
         return ListTile(
           title: Text(
             entry.key,
-            style: const TextStyle(color: Colors.white70),
+            // style: const TextStyle(color: Colors.white70),
           ),
           onTap: () {
             context.push(entry.value);
@@ -84,7 +85,6 @@ class DefaultLayout extends StatelessWidget {
   // 상단 네비게이션 바 구성
   Widget _buildTopBar(BuildContext context) {
     return Container(
-      color: Colors.white,
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -96,11 +96,10 @@ class DefaultLayout extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  '어드민',
+                  'Seller',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue[800],
                   ),
                 ),
                 const SizedBox(width: 20),
@@ -129,15 +128,7 @@ class DefaultLayout extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               CircleAvatar(
-                backgroundColor: Colors.blue[800],
-                child: const Icon(Icons.person, color: Colors.white),
-              ),
-              const SizedBox(width: 8),
-              TextButton(
-                onPressed: () {
-                  // 로그아웃 로직
-                },
-                child: const Text('Logout'),
+                child: const Icon(Icons.person),
               ),
             ],
           ),
@@ -176,8 +167,18 @@ class DefaultLayout extends StatelessWidget {
         body: child,
       );
     } else {
-      // 데스크탑: 사이드바 고정 + 상단 네비게이션 바 위에 콘텐츠
       return Scaffold(
+        appBar: AppBar(
+          leading: Icon(Icons.ac_unit),
+          title: const Text('어드민'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.notifications_none),
+              onPressed: () {},
+            ),
+            const SizedBox(width: 8),
+          ],
+        ),
         body: Row(
           children: [
             SizedBox(
@@ -185,11 +186,9 @@ class DefaultLayout extends StatelessWidget {
               child: _buildSidebar(context),
             ),
             Expanded(
-              child: Column(
-                children: [
-                  _buildTopBar(context),
-                  Expanded(child: child),
-                ],
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: child,
               ),
             ),
           ],
