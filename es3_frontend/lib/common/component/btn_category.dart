@@ -17,24 +17,28 @@ class CategoryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      child: Text(
-        text,
-        style: TextStyle(
-          color: selected == false ? Colors.black87 : Colors.white,
-        ),
-      ),
-      style: TextButton.styleFrom(
-        backgroundColor: selected == false ? Colors.white : MAIN_COLOR,
-        elevation: 1.0,
-        shape: border! ? RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(50)),
-          side: BorderSide(
-            color: selected == false ? Colors.black12 : MAIN_COLOR,
+    return Row(
+      children: [
+        TextButton(
+          onPressed: onPressed,
+          child: Text(
+            text,
+            style: TextStyle(
+              color: selected == false ? Colors.black87 : Colors.white,
+            ),
           ),
-        ) : null,
-      ),
+          style: TextButton.styleFrom(
+            backgroundColor: selected == false ? Colors.white : MAIN_COLOR,
+            elevation: 1.0,
+            shape: border! ? RoundedRectangleBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(50)),
+              side: BorderSide(
+                color: selected == false ? Colors.black12 : MAIN_COLOR,
+              ),
+            ) : null,
+          ),
+        ),
+      ],
     );
   }
 }

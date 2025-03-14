@@ -1,6 +1,9 @@
 import 'package:es3_frontend/common/component/btn_category.dart';
 import 'package:es3_frontend/common/component/btn_main_options.dart';
 import 'package:es3_frontend/common/component/main_carousel.dart';
+import 'package:es3_frontend/common/component/product_rank_card.dart';
+import 'package:es3_frontend/common/component/product_rank_carousel.dart';
+import 'package:es3_frontend/common/const/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../products/model/product.dart';
@@ -22,7 +25,14 @@ class _HomeScreenState extends State<HomeScreen> {
     "Last buy": "images/options/last_buy.png",
     "Coupon": "images/options/coupon.png",
   };
-  final List<String> categories = ['all', 'clothing', 'bags', 'shoes', 'accessories', 'athletics'];
+  final List<String> categories = [
+    'all',
+    'clothing',
+    'bags',
+    'shoes',
+    'accessories',
+    'athletics'
+  ];
   int _curSelectedCategory = 0;
   final List<Product> products = [
     Product(
@@ -78,6 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 10),
           mainOptions(),
           const SizedBox(height: 20),
+          _buildProductRank(),
+          const SizedBox(height: 20),
           listMenu(),
           _buildProductGrid()
         ],
@@ -87,25 +99,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget renderMainMenu() {
     return Row(
-        children: mainMenus.asMap().entries.map((entry) {
-          int index = entry.key;
-          String menu = entry.value;
-          return Expanded(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        for (int i = 0; i < mainMenus.length; i++) ...[
+          Expanded(
             child: Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-              child: CategoryButton(
-                text: menu,
-                selected: _curSelectedMenu == index,
-                onPressed: (){
-                  setState(() {
-                    _curSelectedMenu = index;
-                  });
-                },
+                  const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+              child: Center(
+                child: GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      _curSelectedMenu = i;
+                    });
+                  },
+                  child: Text(
+                    mainMenus[i],
+                    style: TextStyle(
+                      color: i == _curSelectedMenu ? MAIN_COLOR : GRAY2_COLOR,
+                    ),
+                  ),
+                ),
               ),
             ),
-          );
-        }).toList());
+          ),
+          // 마지막 버튼 뒤에는 Divider를 넣지 않음
+          if (i < mainMenus.length - 1)
+            const SizedBox(
+              height: 24,
+              width: 1, // 너비를 1로 설정
+              child: VerticalDivider(
+                  thickness: 1,
+                  color: GRAY2_COLOR,
+                  endIndent: 3,
+                  indent: 3),
+            ),
+        ],
+      ],
+    );
   }
 
   Widget mainOptions() {
@@ -135,13 +166,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 int index = entry.key;
                 String cat = entry.value;
                 return Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0, vertical: 8.0),
                   child: CategoryButton(
                     text: cat,
                     selected: _curSelectedCategory == index,
                     border: _curSelectedCategory != index,
-                    onPressed: (){
+                    onPressed: () {
                       setState(() {
                         _curSelectedCategory = index;
                       });
@@ -151,6 +182,22 @@ class _HomeScreenState extends State<HomeScreen> {
               }).toList(),
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductRank() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Ranking',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          ProductRankCarousel()
         ],
       ),
     );

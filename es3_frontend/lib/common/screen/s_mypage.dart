@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../products/model/product.dart';
+import '../const/colors.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -122,7 +123,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
             ),
             Text(
               'see more',
-              style: TextStyle(color: Color(0xff7DAA93), fontSize: 12),
+              style: TextStyle(color: SUB_COLOR, fontSize: 12),
             ),
           ],
         ),
@@ -139,7 +140,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               '22000',
               style: TextStyle(
                 fontSize: 12,
-                color: Color(0xff7DAA93),
+                color: SUB_COLOR,
               ),
             ),
           ],
@@ -157,7 +158,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               '8',
               style: TextStyle(
                 fontSize: 12,
-                color: Color(0xff7DAA93),
+                color: SUB_COLOR,
               ),
             ),
           ],
@@ -174,7 +175,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
             Text(
               '8',
               style: TextStyle(
-                color: Color(0xff7DAA93),
+                color: SUB_COLOR,
                 fontSize: 12,
               ),
             ),

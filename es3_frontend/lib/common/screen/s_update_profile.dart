@@ -1,3 +1,4 @@
+import 'package:es3_frontend/common/const/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,7 +20,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           Text(
             'email',
             style: TextStyle(
-              color: Color(0xff999999),
+              color: GRAY1_COLOR,
             ),
           ),
           Row(
@@ -38,7 +39,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           Text(
             'name',
             style: TextStyle(
-              color: Color(0xff999999),
+              color: GRAY1_COLOR,
             ),
           ),
           Row(
@@ -57,7 +58,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           Text(
             'password',
             style: TextStyle(
-              color: Color(0xff999999),
+              color: GRAY1_COLOR,
             ),
           ),
           Row(
@@ -76,7 +77,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           Text(
             'mobile',
             style: TextStyle(
-              color: Color(0xff999999),
+              color: GRAY1_COLOR,
             ),
           ),
           Row(
@@ -95,7 +96,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           Text(
             'birth day',
             style: TextStyle(
-              color: Color(0xff999999),
+              color: GRAY1_COLOR,
             ),
           ),
           Row(
