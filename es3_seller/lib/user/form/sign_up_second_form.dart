@@ -2,7 +2,7 @@ import 'package:es3_seller/component/custom_text_form_field.dart';
 import 'package:es3_seller/component/required_form_label.dart';
 import 'package:flutter/material.dart';
 
-import '../const/colors.dart';
+import '../../const/colors.dart';
 
 class SignUpSecondForm extends StatefulWidget {
   final VoidCallback goBack;

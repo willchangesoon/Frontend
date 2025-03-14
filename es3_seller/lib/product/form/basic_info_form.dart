@@ -1,35 +1,92 @@
 import 'package:es3_seller/component/custom_text_form_field.dart';
 import 'package:es3_seller/component/required_form_label.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BasicInfoForm extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController titleController;
-  final bool visibility;
-  final String? deliveryType;
-  final ValueChanged<bool> onVisibilityChanged;
-  final ValueChanged<String?> onDeliveryTypeChanged;
+import '../../component/category_selection.dart';
+import '../../component/dynamic_option_form.dart';
+import '../../provider/dio_provider.dart';
+import '../model/category.dart' as category;
+
+class BasicInfoForm extends ConsumerStatefulWidget {
+  final VoidCallback goBack;
+  final ValueChanged<Map<String, dynamic>> onNext;
 
   const BasicInfoForm({
-    Key? key,
-    required this.formKey,
-    required this.titleController,
-    required this.visibility,
-    required this.deliveryType,
-    required this.onVisibilityChanged,
-    required this.onDeliveryTypeChanged,
-  }) : super(key: key);
+    super.key,
+    required this.goBack,
+    required this.onNext,
+  });
+
+  @override
+  ConsumerState<BasicInfoForm> createState() => _BasicInfoFormState();
+}
+
+class _BasicInfoFormState extends ConsumerState<BasicInfoForm> {
+  final _formKey = GlobalKey<FormState>();
+  final titleController = TextEditingController();
+  final priceController = TextEditingController();
+  bool visibility = false;
+  String? deliveryType;
+
+  List<category.Category> _categories = [];
+  category.Category? _selectedTopCategory;
+  category.Category? _selectedSubCategory;
+  bool _loadingCategories = true;
+  String? _categoryError;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
+  }
+
+  Future<void> _fetchCategories() async {
+    try {
+      final response = await ref.read(dioProvider)
+          .get('http://localhost:8080/order-v1/common/categories');
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data;
+        final categories =
+            data.map((json) => category.Category.fromJson(json)).toList();
+        setState(() {
+          _categories = categories;
+          _loadingCategories = false;
+          final topCategories =
+              _categories.where((cat) => cat.parentsId == null).toList();
+          if (topCategories.isNotEmpty) {
+            _selectedTopCategory = topCategories.first;
+            final subCategories = _categories
+                .where((cat) => cat.parentsId == _selectedTopCategory!.id)
+                .toList();
+            if (subCategories.isNotEmpty) {
+              _selectedSubCategory = subCategories.first;
+            }
+          }
+        });
+      } else {
+        setState(() {
+          _loadingCategories = false;
+          _categoryError = 'Error: ${response.statusCode}';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _loadingCategories = false;
+        _categoryError = e.toString();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const RequiredFormLabel(text: 'Basic Information'),
           const SizedBox(height: 20),
-          // 제목 입력 필드
           CustomTextFormField(
             controller: titleController,
             text: 'Title',
@@ -41,19 +98,21 @@ class BasicInfoForm extends StatelessWidget {
             },
           ),
           const SizedBox(height: 10),
-          // Visibility 스위치
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text('Visibility'),
               Switch(
                 value: visibility,
-                onChanged: onVisibilityChanged,
+                onChanged: (val) {
+                  setState(() {
+                    visibility = val;
+                  });
+                },
               ),
             ],
           ),
           const SizedBox(height: 10),
-          // Delivery Type 라디오 버튼
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -63,16 +122,91 @@ class BasicInfoForm extends StatelessWidget {
                   Radio<String>(
                     value: '가게 배송',
                     groupValue: deliveryType,
-                    onChanged: onDeliveryTypeChanged,
+                    onChanged: (val) {
+                      setState(() {
+                        deliveryType = val;
+                      });
+                    },
                   ),
                   const Text('가게 배송'),
                   Radio<String>(
                     value: '서비스 배송',
                     groupValue: deliveryType,
-                    onChanged: onDeliveryTypeChanged,
+                    onChanged: (val) {
+                      setState(() {
+                        deliveryType = val;
+                      });
+                    },
                   ),
                   const Text('서비스 배송'),
                 ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _loadingCategories
+              ? const Center(child: CircularProgressIndicator())
+              : _categoryError != null
+                  ? Center(child: Text(_categoryError!))
+                  : CategorySelection(
+                      topCategories: _categories
+                          .where((cat) => cat.parentsId == null)
+                          .toList(),
+                      subCategories: _selectedTopCategory == null
+                          ? []
+                          : _categories
+                              .where((cat) =>
+                                  cat.parentsId == _selectedTopCategory!.id)
+                              .toList(),
+                      selectedTopCategory: _selectedTopCategory,
+                      selectedSubCategory: _selectedSubCategory,
+                      onTopCategoryChanged: (newCat) {
+                        setState(() {
+                          _selectedTopCategory = newCat;
+                          final subCats = _categories
+                              .where((cat) => cat.parentsId == newCat!.id)
+                              .toList();
+                          _selectedSubCategory =
+                              subCats.isNotEmpty ? subCats.first : null;
+                        });
+                      },
+                      onSubCategoryChanged: (newSubCat) {
+                        setState(() {
+                          _selectedSubCategory = newSubCat;
+                        });
+                      },
+                    ),
+          const SizedBox(height: 10),
+          CustomTextFormField(
+            controller: priceController,
+            keyboardType: TextInputType.number,
+            text: 'price',
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter price';
+              }
+              return null;
+            },
+          ),
+          const DynamicOptionsForm(),
+          const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                onPressed: (){
+                  final data = {
+                    "title": titleController.text,
+                    "visibility": visibility,
+                    "deliveryType": deliveryType,
+                    "mainCategory": _selectedTopCategory!.name,
+                    "subCategory" : _selectedSubCategory?.name,
+                    "price" : priceController.text,
+                    "options" : ""
+                  };
+                  widget.onNext(data);
+                },
+                child: Text('Next'),
               ),
             ],
           ),

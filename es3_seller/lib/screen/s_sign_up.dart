@@ -1,13 +1,13 @@
 import 'package:es3_seller/component/page_indicator.dart';
-import 'package:es3_seller/form/agree_terms.dart';
-import 'package:es3_seller/form/sign_up_second_form.dart';
-import 'package:es3_seller/form/sign_up_third_form.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../form/sign_up_first_form.dart';
+import '../user/form/agree_terms.dart';
+import '../user/form/sign_up_first_form.dart';
+import '../user/form/sign_up_second_form.dart';
+import '../user/form/sign_up_third_form.dart';
 import '../user/provider/auth_provider.dart';
 import '../user/user_model.dart';
 

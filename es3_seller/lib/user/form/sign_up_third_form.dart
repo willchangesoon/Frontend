@@ -1,7 +1,7 @@
 import 'package:es3_seller/component/required_form_label.dart';
 import 'package:flutter/material.dart';
 import 'package:es3_seller/const/colors.dart';
-import '../component/custom_text_form_field.dart';
+import '../../component/custom_text_form_field.dart';
 
 class SignUpThirdForm extends StatefulWidget {
   final VoidCallback goBack;

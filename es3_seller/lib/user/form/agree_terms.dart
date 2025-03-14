@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../const/colors.dart';
+import '../../const/colors.dart';
+
 
 class AgreeTerms extends StatefulWidget {
   final VoidCallback goBack;

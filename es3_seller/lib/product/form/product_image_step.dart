@@ -1,17 +1,24 @@
 import 'dart:io';
-
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProductImagesStep extends StatefulWidget {
-  final ValueChanged<Map<String, dynamic>> onNext;
-  final VoidCallback goBack;
+  final dynamic mainImage;
+  final List<dynamic> additionalImages;
+  final ValueChanged<dynamic> onMainImagePicked;
+  final ValueChanged<dynamic> onAdditionalImagePicked;
+  final ValueChanged<int> onRemoveAdditionalImage;
 
   const ProductImagesStep({
     super.key,
-    required this.onNext,
-    required this.goBack,
+    required this.mainImage,
+    required this.additionalImages,
+    required this.onMainImagePicked,
+    required this.onAdditionalImagePicked,
+    required this.onRemoveAdditionalImage,
   });
 
   @override
@@ -20,28 +27,29 @@ class ProductImagesStep extends StatefulWidget {
 
 class _ProductImagesStepState extends State<ProductImagesStep> {
   final ImagePicker _picker = ImagePicker();
-  File? _mainImage;
-  final List<File> _additionalImages = [];
 
   Future<void> _pickMainImage() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      setState(() {
-        _mainImage = File(pickedFile.path);
-      });
+      if (kIsWeb) {
+        final Uint8List bytes = await pickedFile.readAsBytes();
+        widget.onMainImagePicked(bytes);
+      } else {
+        widget.onMainImagePicked(File(pickedFile.path));
+      }
     }
   }
 
   Future<void> _pickAdditionalImage() async {
-    if (_additionalImages.length >= 4) return;
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+    if (widget.additionalImages.length >= 4) return;
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      setState(() {
-        if (_additionalImages.length >= 4) return;
-        _additionalImages.add(File(pickedFile.path));
-      });
+      if (kIsWeb) {
+        final Uint8List bytes = await pickedFile.readAsBytes();
+        widget.onAdditionalImagePicked(bytes);
+      } else {
+        widget.onAdditionalImagePicked(File(pickedFile.path));
+      }
     }
   }
 
@@ -65,8 +73,10 @@ class _ProductImagesStepState extends State<ProductImagesStep> {
               border: Border.all(color: Colors.grey),
               color: Colors.grey[200],
             ),
-            child: _mainImage != null
-                ? Image.file(_mainImage!, fit: BoxFit.cover)
+            child: widget.mainImage != null
+                ? (kIsWeb
+                ? Image.memory(widget.mainImage as Uint8List, fit: BoxFit.cover)
+                : Image.file(widget.mainImage as File, fit: BoxFit.cover))
                 : const Center(child: Text('Tap to select main image')),
           ),
         ),
@@ -81,31 +91,34 @@ class _ProductImagesStepState extends State<ProductImagesStep> {
           spacing: 10,
           runSpacing: 10,
           children: [
-            ..._additionalImages.asMap().entries.map((entry) {
+            ...widget.additionalImages.asMap().entries.map((entry) {
               int index = entry.key;
-              File imageFile = entry.value;
+              var image = entry.value;
+              Widget imageWidget;
+              if (kIsWeb) {
+                imageWidget = Image.memory(image as Uint8List, fit: BoxFit.cover);
+              } else {
+                imageWidget = Image.file(image as File, fit: BoxFit.cover);
+              }
               return Stack(
                 alignment: Alignment.topRight,
                 children: [
                   Container(
                     width: 100,
                     height: 100,
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)),
-                    child: Image.file(imageFile, fit: BoxFit.cover),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: imageWidget,
                   ),
                   IconButton(
                     icon: const Icon(Icons.close, color: Colors.red),
-                    onPressed: () {
-                      setState(() {
-                        _additionalImages.removeAt(index);
-                      });
-                    },
+                    onPressed: () => widget.onRemoveAdditionalImage(index),
                   ),
                 ],
               );
             }).toList(),
-            if (_additionalImages.length < 4)
+            if (widget.additionalImages.length < 4)
               GestureDetector(
                 onTap: _pickAdditionalImage,
                 child: Container(
@@ -121,20 +134,13 @@ class _ProductImagesStepState extends State<ProductImagesStep> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ElevatedButton(
-              onPressed: () {
-                widget.goBack();
+              onPressed: (){
+                context.pop();
               },
               child: const Text('Back'),
             ),
             ElevatedButton(
-              onPressed: () {
-                final data = {
-                  'mainImage': _mainImage,
-                  'additionalImages': _additionalImages,
-                };
-                print('$data');
-                widget.onNext(data);
-              },
+              onPressed: (){},
               child: Text('Next'),
             ),
           ],

@@ -88,40 +88,6 @@ class AuthNotifier extends StateNotifier<UserModelBase?> {
     }
   }
 
-  // bool isAccessTokenExpired() {
-  //   if (state.accessToken == null) return true;
-  //   return JwtDecoder.isExpired(state.accessToken!);
-  // }
-
-  // Future<void> refreshAccessToken() async {
-  //   if (state.refreshToken == null) return;
-  //   try {
-  //     final response = await dio.post(
-  //       'https://your-backend.com/api/auth/refresh',
-  //       data: jsonEncode({'refreshToken': state.refreshToken}),
-  //       options: Options(headers: {'Content-Type': 'application/json'}),
-  //     );
-  //
-  //     if (response.statusCode == 200) {
-  //       final newAccessToken = response.data['accessToken'] as String;
-  //       // 갱신된 accessToken 저장
-  //       // if (kIsWeb) {
-  //       //   // html.window.localStorage['access_token'] = newAccessToken;
-  //       // } else {
-  //       //   final prefs = await SharedPreferences.getInstance();
-  //       //   await prefs.setString('access_token', newAccessToken);
-  //       // }
-  //
-  //       state = state.copyWith(accessToken: newAccessToken);
-  //     } else {
-  //       state = state.copyWith(
-  //           error: 'Token refresh failed: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     state = state.copyWith(error: e.toString());
-  //   }
-  // }
-
   Future<void> logout() async {
     storage.remove(ACCESS_TOKEN_KEY);
     storage.remove(REFRESH_TOKEN_KEY);

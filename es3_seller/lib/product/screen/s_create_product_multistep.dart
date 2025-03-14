@@ -1,19 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:es3_seller/component/default_layout.dart';
-import 'package:es3_seller/component/dynamic_option_form.dart';
+import 'package:es3_seller/product/form/description.dart';
+import 'package:es3_seller/product/model/product.dart';
+import 'package:es3_seller/product/repository/product_repository.dart';
 import 'package:es3_seller/product/screen/product_image_step.dart';
 import 'package:es3_seller/provider/dio_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../component/category_selection.dart';
-import '../../component/custom_text_form_field.dart';
 import '../form/basic_info_form.dart';
-import '../model/category.dart';
 
 class CreateProductMultiStepScreen extends ConsumerStatefulWidget {
   const CreateProductMultiStepScreen({super.key});
@@ -25,267 +24,99 @@ class CreateProductMultiStepScreen extends ConsumerStatefulWidget {
 
 class _CreateProductMultiStepScreenState
     extends ConsumerState<CreateProductMultiStepScreen> {
-  // Step 관리
   int _currentStep = 0;
-  quill.QuillController _quillController = quill.QuillController.basic();
 
-  // Step 1: Basic Info
-  final GlobalKey<FormState> _basicInfoFormKey = GlobalKey<FormState>();
-  final TextEditingController _titleController = TextEditingController();
-  bool _visibility = true;
-  String? _deliveryType;
-
-  // 카테고리
-  List<Category> _categories = [];
-  Category? _selectedTopCategory;
-  Category? _selectedSubCategory;
-  bool _loadingCategories = true;
-  String? _categoryError;
-
-  // 가격은 CustomTextFormField 내에서 처리 (값은 나중에 Form에서 가져올 수 있음)
-
-  // Step 2: Product Images
-  File? _mainImage;
-  final List<File> _additionalImages = [];
-
-  // Step 3: Description
-  final TextEditingController _descriptionController = TextEditingController();
+  Map<String, dynamic>? basicInfo;
+  Map<String, dynamic>? images;
+  String? description;
 
   @override
   void initState() {
     super.initState();
-    _fetchCategories();
-  }
-
-  // 카테고리 API 호출 및 초기화
-  Future<void> _fetchCategories() async {
-    try {
-      final response = await ref
-          .read(dioProvider)
-          .get('http://localhost:8080/order-v1/common/categories');
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data;
-        final categories = data.map((json) => Category.fromJson(json)).toList();
-        setState(() {
-          _categories = categories;
-          _loadingCategories = false;
-          final topCategories =
-              _categories.where((cat) => cat.parentsId == null).toList();
-          if (topCategories.isNotEmpty) {
-            _selectedTopCategory = topCategories.first;
-            final subCategories = _categories
-                .where((cat) => cat.parentsId == _selectedTopCategory!.id)
-                .toList();
-            if (subCategories.isNotEmpty) {
-              _selectedSubCategory = subCategories.first;
-            }
-          }
-        });
-      } else {
-        setState(() {
-          _loadingCategories = false;
-          _categoryError = 'Error: ${response.statusCode}';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _loadingCategories = false;
-        _categoryError = e.toString();
-      });
-    }
   }
 
   // 각 단계별 콘텐츠 빌드
   Widget _buildStepContent() {
     switch (_currentStep) {
       case 0:
-        return _buildBasicInfoStep();
+        return BasicInfoForm(
+          goBack: () {},
+          onNext: (Map<String, dynamic> data) {
+            setState(() {
+              basicInfo = data;
+              _currentStep = 1;
+              print('$data');
+            });
+          },
+        );
       case 1:
-        return _buildImagesStep();
+        return ProductImagesStep(
+          goBack: () {
+            setState(() {
+              _currentStep = 0;
+            });
+          },
+          onNext: (Map<String, dynamic> data) {
+            setState(() {
+              images = data;
+              _currentStep = 2;
+              print('$data');
+            });
+          },
+        );
       case 2:
-        return _buildDescriptionStep();
+        return ProductDescription(
+          goBack: () {
+            setState(() {
+              _currentStep = 1;
+            });
+          },
+          onSubmit: (String value) {
+            setState(() {
+              description = value;
+            });
+            _submitForm();
+          },
+        );
       default:
         return Container();
     }
   }
 
-  // Step 1: Basic Info Form 구성
-  Widget _buildBasicInfoStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        BasicInfoForm(
-          formKey: _basicInfoFormKey,
-          titleController: _titleController,
-          visibility: _visibility,
-          deliveryType: _deliveryType,
-          onVisibilityChanged: (val) {
-            setState(() {
-              _visibility = val;
-            });
-          },
-          onDeliveryTypeChanged: (val) {
-            setState(() {
-              _deliveryType = val;
-            });
-          },
-        ),
-        const SizedBox(height: 20),
-        // 카테고리 선택
-        _loadingCategories
-            ? const Center(child: CircularProgressIndicator())
-            : _categoryError != null
-                ? Center(child: Text(_categoryError!))
-                : CategorySelection(
-                    topCategories: _categories
-                        .where((cat) => cat.parentsId == null)
-                        .toList(),
-                    subCategories: _selectedTopCategory == null
-                        ? []
-                        : _categories
-                            .where((cat) =>
-                                cat.parentsId == _selectedTopCategory!.id)
-                            .toList(),
-                    selectedTopCategory: _selectedTopCategory,
-                    selectedSubCategory: _selectedSubCategory,
-                    onTopCategoryChanged: (newCat) {
-                      setState(() {
-                        _selectedTopCategory = newCat;
-                        final subCats = _categories
-                            .where((cat) => cat.parentsId == newCat!.id)
-                            .toList();
-                        _selectedSubCategory =
-                            subCats.isNotEmpty ? subCats.first : null;
-                      });
-                    },
-                    onSubCategoryChanged: (newSubCat) {
-                      setState(() {
-                        _selectedSubCategory = newSubCat;
-                      });
-                    },
-                  ),
-        const SizedBox(height: 10),
-        // 가격 입력 (CustomTextFormField 내에 validator 포함)
-        CustomTextFormField(
-          keyboardType: TextInputType.number,
-          text: 'price',
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter price';
-            }
-            return null;
-          },
-        ),
-        const DynamicOptionsForm(),
-      ],
-    );
-  }
+  Future<void> _submitForm() async {
+    // 각 단계에서 받은 값들을 하나의 맵으로 합침
+    final Map<String, dynamic> productData = {
+      'title': basicInfo?['title'],
+      'visibility': basicInfo?['visibility'],
+      'deliveryType': basicInfo?['deliveryType'],
+      // 카테고리의 경우, CategorySelectionWidget에서 선택한 카테고리의 id를 기본 정보 맵에 포함시켰거나,
+      // 여기서 따로 _selectedTopCategory, _selectedSubCategory의 id 값을 넣을 수 있습니다.
+      'mainCategory': _selectedTopCategory?.id,
+      'subCategory': _selectedSubCategory?.id,
+      'price': basicInfo?['price'],
+      // 이미지 정보는 images Map에 'mainImage'와 'additionalImages'라는 키로 저장했다고 가정
+      'mainImage': images?['mainImage'],
+      'additionalImages': images?['additionalImages'],
+      'description': description, // quill의 Delta JSON 문자열 혹은 변환된 포맷
+      // 옵션 정보 등 추가 데이터가 있다면 함께 추가
+    };
 
-  // Step 2: 이미지 선택 화면
-  Widget _buildImagesStep() {
-    return ProductImagesStep(
-      mainImage: _mainImage,
-      additionalImages: _additionalImages,
-      onMainImagePicked: (file) {
-        setState(() {
-          _mainImage = file;
-        });
-      },
-      onAdditionalImagePicked: (file) {
-        setState(() {
-          if (_additionalImages.length < 4) {
-            _additionalImages.add(file);
-          }
-        });
-      },
-      onRemoveAdditionalImage: (index) {
-        setState(() {
-          _additionalImages.removeAt(index);
-        });
-      },
-    );
-  }
-
-  // Step 3: Description 입력 화면
-  Widget _buildDescriptionStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Description',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        const SizedBox(height: 8),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              quill.QuillSimpleToolbar(
-                controller: _quillController,
-                config: const quill.QuillSimpleToolbarConfig(),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 500,
-          child: quill.QuillEditor.basic(
-            controller: _quillController,
-            config: const quill.QuillEditorConfig(),
-          ),
-        )
-      ],
-    );
-  }
-
-  // 단계 이동: Next 버튼
-  Future<void> _nextStep() async {
-    if (_currentStep == 0) {
-      // Step 1 유효성 검사
-      if (!_basicInfoFormKey.currentState!.validate()) return;
-    }
-    if (_currentStep < 2) {
-      setState(() {
-        _currentStep++;
-      });
-    } else {
-      // Step 3: 모든 데이터를 모아서 API 호출 (예시)
-      final productData = {
-        'title': _titleController.text,
-        'visibility': _visibility,
-        'deliveryType': _deliveryType,
-        'mainCategory': _selectedTopCategory?.id,
-        'subCategory': _selectedSubCategory?.id,
-        // 가격과 옵션은 기본정보 폼 내에서 처리되었다고 가정
-        'price': '... ', // 필요 시 추출
-        'options': '...', // DynamicOptionsForm의 결과
-        'description': _descriptionController.text,
-        // 이미지 파일들은 따로 업로드 후 URL을 받는 로직 필요
-      };
-      // 예시 API 호출
-      final response = await ref.read(dioProvider).post(
-            'http://localhost:8080/product-v1/create',
-            data: jsonEncode(productData),
-          );
+    try {
+      final response = await ref.read(productRepositoryProvider).createProduct(product: product);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // 성공 시 홈으로 이동 (또는 성공 메시지 표시)
         GoRouter.of(context).push('/home');
       } else {
-        // 실패 처리 (예: 에러 메시지 표시)
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: ${response.statusCode}')),
         );
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
     }
   }
 
-  void _prevStep() {
-    if (_currentStep > 0) {
-      setState(() {
-        _currentStep--;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +127,6 @@ class _CreateProductMultiStepScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 단계 표시
               Text(
                 'Step ${_currentStep + 1} of 3',
                 style:
@@ -304,21 +134,6 @@ class _CreateProductMultiStepScreenState
               ),
               const SizedBox(height: 20),
               _buildStepContent(),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (_currentStep > 0)
-                    ElevatedButton(
-                      onPressed: _prevStep,
-                      child: const Text('Back'),
-                    ),
-                  ElevatedButton(
-                    onPressed: _nextStep,
-                    child: Text(_currentStep < 2 ? 'Next' : 'Submit'),
-                  ),
-                ],
-              ),
             ],
           ),
         ),

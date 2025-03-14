@@ -11,10 +11,10 @@
 #include <url_launcher_windows/url_launcher_windows.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
-    FileSelectorWindowsRegisterWithRegistrar(
-            registry->GetRegistrarForPlugin("FileSelectorWindows"));
+  FileSelectorWindowsRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FileSelectorWindows"));
   FlutterSecureStorageWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FlutterSecureStorageWindowsPlugin"));
-    UrlLauncherWindowsRegisterWithRegistrar(
-            registry->GetRegistrarForPlugin("UrlLauncherWindows"));
+  UrlLauncherWindowsRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("UrlLauncherWindows"));
 }

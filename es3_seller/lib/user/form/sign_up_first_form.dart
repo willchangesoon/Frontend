@@ -1,8 +1,8 @@
 import 'package:es3_seller/component/required_form_label.dart';
 import 'package:flutter/material.dart';
 
-import '../component/custom_text_form_field.dart';
-import '../const/colors.dart';
+import '../../component/custom_text_form_field.dart';
+import '../../const/colors.dart';
 
 class SignUpFirstForm extends StatefulWidget {
   final VoidCallback goBack;
@@ -28,8 +28,6 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
   final marketNameController = TextEditingController();
   final customerSupportController = TextEditingController();
 
-  bool _isButtonEnabled = false;
-
   @override
   void initState() {
     super.initState();
@@ -51,9 +49,6 @@ class _SignUpFirstFormState extends State<SignUpFirstForm> {
         marketNameController.text.isNotEmpty &&
         customerSupportController.text.isNotEmpty &&
         (passwordController.text == confirmPasswordController.text);
-    setState(() {
-      _isButtonEnabled = isValid;
-    });
   }
 
   @override
