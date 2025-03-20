@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:es3_seller/exception/exception_response.dart';
 import 'package:es3_seller/storage/local_storage_provider.dart';
 import 'package:es3_seller/storage/platform_local_storage_interface.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,7 +48,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     print('[ERR] [${err.requestOptions.method}] [${err.requestOptions.uri}]');
-    print('err response -> ${err.response}');
+    print('err response -> ${err}');
     final refreshToken = await storage.getItem(key: REFRESH_TOKEN_KEY);
 
     if (refreshToken == null) {
@@ -59,10 +58,11 @@ class CustomInterceptor extends Interceptor {
     final isStatus406 = err.response?.statusCode == 406;
     final isPathRefresh =
         err.requestOptions.path == '/user-v1/oauth/sellers/refresh';
-    ExceptionResponse exceptionResponse =
-        ExceptionResponse.fromJson(err.response!.data);
 
-    if (exceptionResponse.errorCode == 6001 && !isPathRefresh) {
+    // ExceptionResponse exceptionResponse =
+    //     ExceptionResponse.fromJson(err.response?.data);
+
+    if (isStatus406 && !isPathRefresh) {
       final dio = Dio();
       try {
         final resp = await dio.post(

@@ -24,20 +24,27 @@ class ProductRepository {
   Future<void> createProduct({
     required Product product,
   }) async {
+    product.productOptionList
+        .map((opt) => print('${opt.toJson().toString()}'))
+        .toList();
     await dio.post(
       '$baseUrl',
       data: jsonEncode({
-        'title' : product.title,
-        'visibility' : product.visibility,
-        'deliveryType' : product.deliveryType,
-        'mainCategory' : product.mainCategoryId,
-        'subCategory' : product.subCategoryId,
-        'price' : product.price,
-        'mainImage' : product.mainImage,
-        'additionalImages' : product.additionalImages,
-        'description' : product.description,
+        'title': product.title,
+        'visibility': product.visibility,
+        'deliveryType': product.deliveryType,
+        'categoryId': product.categoryId,
+        'price': product.price,
+        'mainImage': product.mainImage,
+        'additionalImages': product.additionalImages,
+        'description': product.description,
+        'productOptionList':
+            product.productOptionList.map((opt) => opt.toJson()).toList()
       }),
-      options: Options(headers: {'Content-Type': 'application/json'}),
+      options: Options(headers: {
+        'Content-Type': 'application/json',
+        'accessToken': 'true',
+      }),
     );
   }
 }

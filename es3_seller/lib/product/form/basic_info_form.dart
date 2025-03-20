@@ -1,10 +1,11 @@
 import 'package:es3_seller/component/custom_text_form_field.dart';
 import 'package:es3_seller/component/required_form_label.dart';
+import 'package:es3_seller/product/model/product_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../component/category_selection.dart';
-import '../../component/dynamic_option_form.dart';
+import '../../component/option_manager.dart';
 import '../../provider/dio_provider.dart';
 import '../model/category.dart' as category;
 
@@ -30,6 +31,7 @@ class _BasicInfoFormState extends ConsumerState<BasicInfoForm> {
   String? deliveryType;
 
   List<category.Category> _categories = [];
+  List<OptionGroup> _options = [];
   category.Category? _selectedTopCategory;
   category.Category? _selectedSubCategory;
   bool _loadingCategories = true;
@@ -189,7 +191,17 @@ class _BasicInfoFormState extends ConsumerState<BasicInfoForm> {
               return null;
             },
           ),
-          const DynamicOptionsForm(),
+          const SizedBox(height: 30),
+          Text('Options'),
+          const SizedBox(height: 20),
+          OptionManager(
+            groups: _options,
+            onGroupsChanged: (updatedOptions) {
+              setState(() {
+                _options = updatedOptions;
+              });
+            },
+          ),
           const SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -201,10 +213,11 @@ class _BasicInfoFormState extends ConsumerState<BasicInfoForm> {
                     "title": titleController.text,
                     "visibility": visibility,
                     "deliveryType": deliveryType,
-                    "mainCategory": _selectedTopCategory!.name,
-                    "subCategory": _selectedSubCategory?.name,
+                    "mainCategory": _selectedTopCategory!.id,
+                    "subCategory": _selectedSubCategory?.id,
                     "price": priceController.text,
-                    "options": ""
+                    "options":
+                        _options.expand((group) => group.options).toList(),
                   };
                   widget.onNext(data);
                 },

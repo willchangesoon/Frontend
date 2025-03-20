@@ -1,10 +1,12 @@
 import 'package:es3_seller/component/default_layout.dart';
 import 'package:es3_seller/product/form/description.dart';
 import 'package:es3_seller/product/form/product_image_step.dart';
+import 'package:es3_seller/product/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../form/basic_info_form.dart';
+import '../repository/product_repository.dart';
 
 class CreateProductMultiStepScreen extends ConsumerStatefulWidget {
   const CreateProductMultiStepScreen({super.key});
@@ -76,36 +78,32 @@ class _CreateProductMultiStepScreenState
   }
 
   Future<void> _submitForm() async {
-    final Map<String, dynamic> productData = {
-      'title': basicInfo?['title'],
-      'visibility': basicInfo?['visibility'],
-      'deliveryType': basicInfo?['deliveryType'],
-      'mainCategory': basicInfo?['mainCategory'],
-      'subCategory': basicInfo?['subCategory'],
-      'price': basicInfo?['price'],
-      'mainImage': images?['mainImage'],
-      'additionalImages': images?['additionalImages'],
-      'description': description,
-    };
+    Product product = Product(
+      title: basicInfo?['title'],
+      visibility: basicInfo?['visibility'],
+      deliveryType: basicInfo?['deliveryType'],
+      categoryId: basicInfo?['subCategory'] == null
+          ? basicInfo!['mainCategory']
+          : basicInfo!['subCategory'],
+      price: int.parse(basicInfo?['price']),
+      // mainImage: images?['mainImage'],
+      mainImage: '',
+      // additionalImages: images?['additionalImages'],
+      additionalImages: [''],
+      description: description!,
+      productOptionList: basicInfo!['options'],
+    );
 
-    print('${productData.toString()}');
-    //
-    // try {
-    //   final response = await ref.read(productRepositoryProvider).createProduct(product: product);
-    //   if (response.statusCode == 200 || response.statusCode == 201) {
-    //     GoRouter.of(context).push('/home');
-    //   } else {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(content: Text('Error: ${response.statusCode}')),
-    //     );
-    //   }
-    // } catch (e) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text('Error: $e')),
-    //   );
-    // }
+    print(product.toString());
+
+    try {
+      await ref.read(productRepositoryProvider).createProduct(product: product);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {

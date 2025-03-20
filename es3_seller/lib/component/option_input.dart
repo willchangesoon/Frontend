@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../product/model/product_option.dart';
 
 class OptionInput extends StatefulWidget {
-  final ProductOption option;
+  final List<ProductOption> option;
   final ValueChanged<String> onOptionNameChanged;
   final ValueChanged<String> onAddValue;
   final ValueChanged<String> onRemoveValue;
@@ -25,11 +25,14 @@ class OptionInput extends StatefulWidget {
 class OptionInputWidgetState extends State<OptionInput> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
+  final TextEditingController _stockController = TextEditingController();
+  final TextEditingController _extraPriceController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.option.optionName;
+    // _nameController.text = widget.option.optionName;
+    _nameController.text = widget.option[0].name;
   }
 
   @override
@@ -95,19 +98,45 @@ class OptionInputWidgetState extends State<OptionInput> {
               ],
             ),
             const SizedBox(height: 12),
-            // 추가된 옵션 값들을 Chip으로 표시
-            Wrap(
-              spacing: 8,
-              runSpacing: 4,
-              children: widget.option.optionValues.map((value) {
-                return Chip(
-                  label: Text(value),
-                  onDeleted: () {
-                    widget.onRemoveValue(value);
-                  },
-                );
-              }).toList(),
-            ),
+            DataTable(
+                columns: const [
+                  DataColumn(label: Text('옵션값')),
+                  DataColumn(label: Text('재고')),
+                  DataColumn(label: Text('추가금액')),
+                  DataColumn(label: Text('확인')),
+                  DataColumn(label: Text('삭제')),
+                ],
+                rows: widget.option
+                    .where((value) =>
+                        value.name.isNotEmpty && value.value.isNotEmpty)
+                    .map(
+                      (value) => DataRow(
+                        cells: [
+                          DataCell(Text(value.value)),
+                          DataCell(
+                            TextField(
+                              controller: _stockController,
+                            ),
+                          ),
+                          DataCell(
+                            TextField(
+                              controller: _extraPriceController,
+                            ),
+                          ),
+                          DataCell(IconButton(
+                            icon: Icon(Icons.check),
+                            onPressed: () {},
+                          )),
+                          DataCell(
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList()),
           ],
         ),
       ),
