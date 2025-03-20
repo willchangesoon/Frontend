@@ -1,9 +1,16 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MainCarousel extends StatefulWidget {
-  const MainCarousel({super.key});
+  final double aspectRatio;
+  final EdgeInsetsGeometry? margin;
+
+  const MainCarousel({
+    super.key,
+    required this.aspectRatio,
+    this.margin,
+  });
 
   @override
   State<MainCarousel> createState() => _MainCarouselState();
@@ -11,13 +18,13 @@ class MainCarousel extends StatefulWidget {
 
 class _MainCarouselState extends State<MainCarousel> {
   final PageController _pageController = PageController(viewportFraction: 1);
-  final List<String> imgList = [
-    '',
-    'https://via.placeholder.com/600x300/33FF57/FFFFFF?text=Image+2',
-    'https://via.placeholder.com/600x300/3357FF/FFFFFF?text=Image+3',
-  ];
   Timer? _timer;
   int _currentIndex = 0;
+  final List<String> imgList = [
+    'assets/images/bw/DSCF0741.jpg',
+    'assets/images/bw/DSCF1497.jpg',
+    'assets/images/bw/DSCF1536.jpg',
+  ];
 
   @override
   void initState() {
@@ -26,7 +33,7 @@ class _MainCarouselState extends State<MainCarousel> {
   }
 
   void _startAutoSlide() {
-    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (_currentIndex < imgList.length - 1) {
         _currentIndex++;
       } else {
@@ -34,7 +41,7 @@ class _MainCarouselState extends State<MainCarousel> {
       }
       _pageController.animateToPage(
         _currentIndex,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
     });
@@ -50,12 +57,13 @@ class _MainCarouselState extends State<MainCarousel> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+      child: AspectRatio(
+        aspectRatio: widget.aspectRatio,
         child: Stack(
           children: [
-            SizedBox(
-              height: 340,
+            // margin 값을 외부에서 받아 사용 (없으면 기본값 8의 좌우 여백)
+            Padding(
+              padding: widget.margin ?? const EdgeInsets.symmetric(horizontal: 8),
               child: PageView.builder(
                 controller: _pageController,
                 itemCount: imgList.length,
@@ -66,11 +74,10 @@ class _MainCarouselState extends State<MainCarousel> {
                 },
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       image: DecorationImage(
-                        image: AssetImage('images/carousel/img_1.png'),
+                        image: AssetImage(imgList[index]),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -94,11 +101,11 @@ class _MainCarouselState extends State<MainCarousel> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Color(0xffCCCCCC)),
+                            color: const Color(0xffCCCCCC)),
                       ),
                       Text(
                         '${_currentIndex + 1} ',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                             color: Colors.white),
@@ -108,7 +115,7 @@ class _MainCarouselState extends State<MainCarousel> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Color(0xffCCCCCC)),
+                            color: const Color(0xffCCCCCC)),
                       ),
                     ],
                   ),

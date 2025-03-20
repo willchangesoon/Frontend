@@ -8,6 +8,7 @@ class DefaultLayout extends StatefulWidget {
   final bool showBottomNav;
   final bool showAppBarBtnBack;
   final bool appBarColor;
+  final bool showBuyBottomNav;
 
   const DefaultLayout({
     super.key,
@@ -16,6 +17,7 @@ class DefaultLayout extends StatefulWidget {
     this.showBottomNav = true,
     this.showAppBarBtnBack = false,
     this.appBarColor = false,
+    this.showBuyBottomNav = false,
   });
 
   @override
@@ -41,7 +43,11 @@ class _DefaultLayoutState extends State<DefaultLayout> {
         color: Colors.white,
         child: widget.child,
       ),
-      bottomNavigationBar: widget.showBottomNav ? renderBottomNav() : null,
+      bottomNavigationBar: widget.showBottomNav
+          ? widget.showBuyBottomNav
+              ? renderBuyBottomNav()
+              : renderBottomNav()
+          : null,
     );
   }
 
@@ -54,11 +60,11 @@ class _DefaultLayoutState extends State<DefaultLayout> {
                 context.pop();
               },
             )
-          : Icon(Icons.logo_dev_outlined),
+          : const Icon(Icons.logo_dev_outlined),
       title: widget.title != null
           ? Text(
               widget.title!,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             )
           : null,
       centerTitle: true,
@@ -81,12 +87,12 @@ class _DefaultLayoutState extends State<DefaultLayout> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(30),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.grey,
             spreadRadius: 2,
             blurRadius: 5,
-            offset: const Offset(0, 2), // changes position of shadow
+            offset: Offset(0, 2), // changes position of shadow
           ),
         ],
       ),
@@ -98,7 +104,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
           });
           context.go(_routes[index]);
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.menu),
             label: 'category',
@@ -125,6 +131,57 @@ class _DefaultLayoutState extends State<DefaultLayout> {
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
         elevation: 0,
+      ),
+    );
+  }
+
+  renderBuyBottomNav() {
+    return BottomAppBar(
+      color: Colors.white,
+      elevation: 1,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // 좋아요 아이콘 + 개수
+            Row(
+              children: [
+                Icon(Icons.add_shopping_cart),
+                SizedBox(width: 4),
+                Text(
+                  "add to cart",
+                ),
+              ],
+            ),
+            // 구매하기 버튼
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+              child: Row(
+                children: [
+                  Text("구매하기",
+                      style: TextStyle(fontSize: 16, color: Colors.white)),
+                  SizedBox(width: 8),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      "무료배송",
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

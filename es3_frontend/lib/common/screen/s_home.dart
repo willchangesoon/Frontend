@@ -84,7 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           renderMainMenu(),
-          MainCarousel(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: MainCarousel(
+              aspectRatio: 1.0,
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+            ),
+          ),
           const SizedBox(height: 10),
           mainOptions(),
           const SizedBox(height: 20),

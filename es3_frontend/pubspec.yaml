@@ -66,6 +66,7 @@ flutter:
   assets:
     - assets/images/login/
     - assets/images/carousel/
+    - assets/images/bw/
     - assets/images/options/
     - assets/images/mypage/
     - assets/images/dmd/

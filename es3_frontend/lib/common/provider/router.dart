@@ -5,6 +5,7 @@ import 'package:es3_frontend/common/screen/s_favorite.dart';
 import 'package:es3_frontend/common/screen/s_home.dart';
 import 'package:es3_frontend/common/screen/s_login.dart';
 import 'package:es3_frontend/common/screen/s_mypage.dart';
+import 'package:es3_frontend/common/screen/s_product_detail.dart';
 import 'package:es3_frontend/common/screen/s_sign_up.dart';
 import 'package:es3_frontend/common/screen/s_update_profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,7 @@ final routerProvider = Provider((ref) {
 });
 
 final GoRouter router = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/product-detail',
   routes: [
     ShellRoute(
       builder: (context, state, child) {
@@ -72,6 +73,10 @@ final GoRouter router = GoRouter(
           ],
         ),
       ],
+    ),
+    GoRoute(
+      path: '/product-detail',
+      builder: (context, state) => ProductDetailScreen(),
     ),
     GoRoute(
       path: '/login',
