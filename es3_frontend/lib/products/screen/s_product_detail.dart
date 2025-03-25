@@ -6,7 +6,10 @@ import 'package:es3_frontend/common/layout/default_layout.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+  static String get routeName => 'productDetail';
+  final String id;
+
+  const ProductDetailScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {

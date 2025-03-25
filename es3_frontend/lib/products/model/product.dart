@@ -1,7 +1,7 @@
 class Product {
   final String imageUrl;
   final String title;
-  final String subtitle;
+  final String storeName;
   final String price;
   final String? discount;
   final double rating;
@@ -9,7 +9,7 @@ class Product {
   Product({
     required this.imageUrl,
     required this.title,
-    required this.subtitle,
+    required this.storeName,
     required this.price,
     this.discount,
     required this.rating,

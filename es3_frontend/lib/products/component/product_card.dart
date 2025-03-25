@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
 
+import '../model/product.dart';
+
 class ProductCard extends StatelessWidget {
   final String imageUrl;
   final String title;
-  final String subtitle;
+  final String shopName;
   final String price;
   final String? discount;
   final double rating;
 
   const ProductCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
-    required this.subtitle,
+    required this.shopName,
     required this.price,
     this.discount,
     required this.rating,
-  }) : super(key: key);
+  });
+
+  factory ProductCard.fromModel({
+    required Product model,
+    bool isDetail = false,
+  }) {
+    return ProductCard(
+      imageUrl: model.imageUrl,
+      title: model.title,
+      shopName: model.storeName,
+      price: model.price,
+      rating: model.rating,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +83,7 @@ class ProductCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  subtitle,
+                  shopName,
                   style: TextStyle(color: Colors.grey),
                   overflow: TextOverflow.ellipsis,
                 ),

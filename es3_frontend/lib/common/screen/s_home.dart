@@ -1,13 +1,15 @@
 import 'package:es3_frontend/common/component/btn_category.dart';
 import 'package:es3_frontend/common/component/btn_main_options.dart';
 import 'package:es3_frontend/common/component/main_carousel.dart';
-import 'package:es3_frontend/common/component/product_rank_card.dart';
-import 'package:es3_frontend/common/component/product_rank_carousel.dart';
+import 'package:es3_frontend/products/component/product_rank_card.dart';
 import 'package:es3_frontend/common/const/colors.dart';
+import 'package:es3_frontend/products/screen/s_product_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../products/component/product_rank_carousel.dart';
 import '../../products/model/product.dart';
-import '../component/product_card.dart';
+import '../../products/component/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -38,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Product(
       imageUrl: "assets/images/sample/img.png",
       title: "하이브",
-      subtitle: "니트 스판 바디수트",
+      storeName: "니트 스판 바디수트",
       price: "38,000",
       discount: "10%",
       rating: 4.8,
@@ -46,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Product(
       imageUrl: "assets/images/sample/img.png",
       title: "화이트걸",
-      subtitle: "라이트 탱크탑",
+      storeName: "라이트 탱크탑",
       price: "38,000",
       discount: null,
       rating: 4.6,
@@ -54,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Product(
       imageUrl: "assets/images/sample/img.png",
       title: "니스바",
-      subtitle: "순면 라인 나시",
+      storeName: "순면 라인 나시",
       price: "18,000",
       discount: "20%",
       rating: 4.4,
@@ -62,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Product(
       imageUrl: "assets/images/sample/img.png",
       title: "순라나",
-      subtitle: "데일리로 입기 좋은 반팔",
+      storeName: "데일리로 입기 좋은 반팔",
       price: "18,000",
       discount: null,
       rating: 4.5,
@@ -70,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Product(
       imageUrl: "assets/images/sample/img.png",
       title: "하이브",
-      subtitle: "니트 스판 바디수트",
+      storeName: "니트 스판 바디수트",
       price: "38,000",
       discount: "10%",
       rating: 4.8,
@@ -114,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
               child: Center(
                 child: GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     setState(() {
                       _curSelectedMenu = i;
                     });
@@ -135,10 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 24,
               width: 1, // 너비를 1로 설정
               child: VerticalDivider(
-                  thickness: 1,
-                  color: GRAY2_COLOR,
-                  endIndent: 3,
-                  indent: 3),
+                  thickness: 1, color: GRAY2_COLOR, endIndent: 3, indent: 3),
             ),
         ],
       ],
@@ -219,13 +218,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       itemCount: products.length,
       itemBuilder: (context, index) {
-        return ProductCard(
-          imageUrl: products[index].imageUrl,
-          title: products[index].title,
-          subtitle: products[index].subtitle,
-          price: products[index].price,
-          discount: products[index].discount,
-          rating: products[index].rating,
+        return GestureDetector(
+          onTap: () {
+            context.pushNamed(
+              ProductDetailScreen.routeName,
+              pathParameters: {'pid': index.toString()},
+            );
+          },
+          child: ProductCard.fromModel(model: products[index]),
         );
       },
     );
