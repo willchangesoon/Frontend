@@ -6,7 +6,7 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 100,
       width: 300,
       child: Card(
@@ -23,19 +23,22 @@ class ReviewCard extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Like this!'),
-                  const SizedBox(height: 5),
-                  Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec risus lectus. Cras maximus diam in accumsan venenatis. Praesent sit amet ante placerat nibh sollicitudin imperdiet. Nullam dui diam, scelerisque.',
-                    style: TextStyle(color: GRAY2_COLOR),
-                    maxLines: 3, // 최대 2줄로 제한, 필요에 따라 조정
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: true,
-                  ),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Like this!'),
+                    const SizedBox(height: 5),
+                    Text(
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec risus lectus. Cras maximus diam in accumsan venenatis. Praesent sit amet ante placerat nibh sollicitudin imperdiet. Nullam dui diam, scelerisque.',
+                      style: TextStyle(color: GRAY2_COLOR),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

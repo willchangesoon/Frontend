@@ -136,51 +136,23 @@ class _DefaultLayoutState extends State<DefaultLayout> {
   }
 
   renderBuyBottomNav() {
-    return BottomAppBar(
-      color: Colors.white,
-      elevation: 1,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // 좋아요 아이콘 + 개수
-            Row(
-              children: [
-                Icon(Icons.add_shopping_cart),
-                SizedBox(width: 4),
-                Text(
-                  "add to cart",
-                ),
-              ],
-            ),
-            // 구매하기 버튼
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-              ),
-              child: Row(
-                children: [
-                  Text("구매하기",
-                      style: TextStyle(fontSize: 16, color: Colors.white)),
-                  SizedBox(width: 8),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      "무료배송",
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+    return Material(
+      elevation: 12,
+      shadowColor: GRAY2_COLOR,
+      child: BottomAppBar(
+        shadowColor: GRAY2_COLOR,
+        elevation: 12,
+        color: Colors.white,
+        child: ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+          ),
+          child: Text(
+            "Purchase",
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
         ),
       ),
     );

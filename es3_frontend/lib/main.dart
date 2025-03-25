@@ -19,7 +19,8 @@ class App extends ConsumerWidget {
 
     return MaterialApp.router(
       theme: ThemeData(
-        fontFamily: 'GmarketSans'
+        fontFamily: 'GmarketSans',
+        useMaterial3: true
       ),
       // home: DefaultLayout(),
       routerConfig: router,

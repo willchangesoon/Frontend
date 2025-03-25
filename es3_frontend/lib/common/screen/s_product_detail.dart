@@ -21,95 +21,130 @@ class ProductDetailScreen extends StatelessWidget {
               aspectRatio: 4 / 5, // 0.8
               margin: EdgeInsets.zero,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      'birchwood  >',
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic, color: GRAY2_COLOR),
-                    ),
-                  ),
-                  Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Unisex Hoodie',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                      IconButton(
-                          onPressed: () {}, icon: Icon(Icons.favorite_border))
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Text('620,000vnd',
-                      style: TextStyle(
-                        decoration: TextDecoration.lineThrough,
-                      )),
-                  Row(
-                    children: [
-                      Text(
-                        '30%',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        '620,000vnd',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('shipping info',
-                          style: TextStyle(color: GRAY1_COLOR)),
-                      Text('delivered in 1,2 days',
-                          style: TextStyle(color: GRAY1_COLOR, fontSize: 10))
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Payment Methods',
-                          style: TextStyle(color: GRAY1_COLOR)),
-                      Text('COD/Bank Transfer/Credit Card',
-                          style: TextStyle(color: GRAY1_COLOR, fontSize: 10)),
-                    ],
-                  ),
-                  Divider(),
-                  // ReviewCard(),
-                  Text('Reviews',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 10),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ReviewCard(),
-                        ReviewCard(),
-                        ReviewCard(),
-                      ],
-                    ),
-                  ),
-                  Divider(),
-                  StoreCard(),
-                  Divider(),
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                mainInfo(),
+                Container(height: 5, color: GRAY3_COLOR),
+                _shippingInfo(),
+                Container(height: 5, color: GRAY3_COLOR),
+                const SizedBox(height: 10),
+                StoreCard(),
+                Divider(),
+                _reviewCards(),
+                Container(height: 5, color: GRAY3_COLOR),
+                _description()
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget mainInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
+              'birchwood  >',
+              style: TextStyle(fontStyle: FontStyle.italic, color: GRAY2_COLOR),
+            ),
+          ),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Unisex Hoodie',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border))
+            ],
+          ),
+          const SizedBox(height: 5),
+          Text('620,000vnd',
+              style: TextStyle(
+                decoration: TextDecoration.lineThrough,
+              )),
+          Row(
+            children: [
+              Text(
+                '30%',
+                style:
+                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 5),
+              Text(
+                '620,000vnd',
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _shippingInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Shipping', style: TextStyle(color: GRAY1_COLOR)),
+              Text('delivered in 1,2 days',
+                  style: TextStyle(color: GRAY1_COLOR, fontSize: 10))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Payment',
+                  style: TextStyle(color: GRAY1_COLOR)),
+              Text('COD/Bank Transfer/Credit Card',
+                  style: TextStyle(color: GRAY1_COLOR, fontSize: 10)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _reviewCards() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Reviews', style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                ReviewCard(),
+                ReviewCard(),
+                ReviewCard(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _description() {
+    return Column(
+      children: [
+        Text('Information')
+      ],
     );
   }
 }
