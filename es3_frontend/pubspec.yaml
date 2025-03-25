@@ -39,8 +39,17 @@ dependencies:
   google_sign_in: ^6.2.2
   go_router: ^14.7.1
   flutter_riverpod: ^2.6.1
+  json_annotation: ^4.9.0
+  json_serializable: ^6.8.0
+  retrofit: ^4.4.2
+  flutter_secure_storage: ^4.2.1
+  logger: any  #for logging purpose
+
 
 dev_dependencies:
+  retrofit_generator: '>=8.0.0 <10.0.0'
+  json_serializable: ^6.8.0
+  build_runner: ^2.3.3
   flutter_test:
     sdk: flutter
 

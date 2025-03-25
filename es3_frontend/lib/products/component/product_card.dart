@@ -6,9 +6,9 @@ class ProductCard extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String shopName;
-  final String price;
-  final String? discount;
-  final double rating;
+  final int price;
+  final int? discount;
+  final double? rating;
 
   const ProductCard({
     super.key,
@@ -30,6 +30,7 @@ class ProductCard extends StatelessWidget {
       shopName: model.storeName,
       price: model.price,
       rating: model.rating,
+      discount: model.discount,
     );
   }
 
@@ -45,7 +46,7 @@ class ProductCard extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(12)),
             child: AspectRatio(
               aspectRatio: 1,
-              child: Image.asset(
+              child: Image.network(
                 imageUrl,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -59,16 +60,16 @@ class ProductCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    if (discount != null)
+                    if (discount != 0)
                       Text(
-                        '$discount ',
+                        '${discount.toString()}% ',
                         style: TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     Text(
-                      price,
+                      '$price원',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -87,12 +88,12 @@ class ProductCard extends StatelessWidget {
                   style: TextStyle(color: Colors.grey),
                   overflow: TextOverflow.ellipsis,
                 ),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber, size: 16),
-                    Text(rating.toString()),
-                  ],
-                )
+                // Row(
+                //   children: [
+                //     Icon(Icons.star, color: Colors.amber, size: 16),
+                //     Text(rating.toString()),
+                //   ],
+                // )
               ],
             ),
           ),
