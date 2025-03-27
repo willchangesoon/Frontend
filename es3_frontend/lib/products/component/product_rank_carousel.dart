@@ -107,7 +107,8 @@ class _ProductRankCarouselState extends ConsumerState<ProductRankCarousel> {
                 img: p.imageUrl,
                 title: p.title,
                 storeName: p.storeName,
-                price: p.price.toString(),
+                price: p.price,
+                discount: p.discount,
               ));
             }
           }

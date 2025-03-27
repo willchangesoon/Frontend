@@ -77,7 +77,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/product-detail/:pid',
       name: ProductDetailScreen.routeName,
-      builder: (context, state) => ProductDetailScreen(id: state.pathParameters['pid']!),
+      builder: (context, state) => ProductDetailScreen(id: int.parse(state.pathParameters['pid']!)),
     ),
     GoRoute(
       path: '/login',

@@ -38,53 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
     'athletics'
   ];
   int _curSelectedCategory = 0;
-  final List<Product> products = [
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "하이브",
-      storeName: "니트 스판 바디수트",
-      price: 12900,
-      discount: 10,
-      rating: 4.8,
-    ),
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "화이트걸",
-      storeName: "라이트 탱크탑",
-      price: 23800,
-      discount: null,
-      rating: 4.6,
-    ),
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "니스바",
-      storeName: "순면 라인 나시",
-      price: 18000,
-      discount: 20,
-      rating: 4.4,
-    ),
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "순라나",
-      storeName: "데일리로 입기 좋은 반팔",
-      price: 230000,
-      discount: null,
-      rating: 4.5,
-    ),
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "하이브",
-      storeName: "니트 스판 바디수트",
-      price: 10000,
-      discount: 10,
-      rating: 4.8,
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: MainCarousel(
               aspectRatio: 1.0,
               margin: const EdgeInsets.symmetric(horizontal: 8),
+              imgList: [
+                'https://dmd-studios.com/uploads/by_product/sku-777/d0196aba3ee1cd86fe6fee5ee7971a52.jpg',
+                'https://dmd-studios.com/uploads/by_product/sku-752/f546ec1db15c50b7748bf4711812e36c.JPG',
+                'https://dmd-studios.com/uploads/by_product/sku-744/9342724ed1bee470cb5aa9de7aefda56.jpg',
+              ],
             ),
           ),
           const SizedBox(height: 10),
@@ -209,24 +167,26 @@ class _HomeScreenState extends State<HomeScreen> {
             'Ranking',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
-          ProductRankCarousel(provider: productProvider,)
+          ProductRankCarousel(
+            provider: productProvider,
+          )
         ],
       ),
     );
   }
 
   Widget _buildProductGrid() {
-     return GridPaginationListView(
-         provider: productProvider,
-         itemBuilder: <RestaurantModel>(_, index, model) {
-           return GestureDetector(
-               child: ProductCard.fromModel(model: model),
-               onTap: () {
-                 context.goNamed(
-                   ProductDetailScreen.routeName,
-                   pathParameters: {'pid': model.id},
-                 );
-               });
-         });
+    return GridPaginationListView(
+        provider: productProvider,
+        itemBuilder: <RestaurantModel>(_, index, model) {
+          return GestureDetector(
+              child: ProductCard.fromModel(model: model),
+              onTap: () {
+                context.pushNamed(
+                  ProductDetailScreen.routeName,
+                  pathParameters: {'pid': (model.id).toString()},
+                );
+              });
+        });
   }
 }

@@ -5,11 +5,13 @@ import 'package:go_router/go_router.dart';
 class MainCarousel extends StatefulWidget {
   final double aspectRatio;
   final EdgeInsetsGeometry? margin;
+  final List<String> imgList;
 
   const MainCarousel({
     super.key,
     required this.aspectRatio,
     this.margin,
+    required this.imgList,
   });
 
   @override
@@ -20,11 +22,7 @@ class _MainCarouselState extends State<MainCarousel> {
   final PageController _pageController = PageController(viewportFraction: 1);
   Timer? _timer;
   int _currentIndex = 0;
-  final List<String> imgList = [
-    'assets/images/bw/DSCF0741.jpg',
-    'assets/images/bw/DSCF1497.jpg',
-    'assets/images/bw/DSCF1536.jpg',
-  ];
+
 
   @override
   void initState() {
@@ -34,7 +32,7 @@ class _MainCarouselState extends State<MainCarousel> {
 
   void _startAutoSlide() {
     _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      if (_currentIndex < imgList.length - 1) {
+      if (_currentIndex < widget.imgList.length - 1) {
         _currentIndex++;
       } else {
         _currentIndex = 0;
@@ -66,7 +64,7 @@ class _MainCarouselState extends State<MainCarousel> {
               padding: widget.margin ?? const EdgeInsets.symmetric(horizontal: 8),
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: imgList.length,
+                itemCount: widget.imgList.length,
                 onPageChanged: (index) {
                   setState(() {
                     _currentIndex = index;
@@ -77,7 +75,7 @@ class _MainCarouselState extends State<MainCarousel> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       image: DecorationImage(
-                        image: AssetImage(imgList[index]),
+                        image: NetworkImage(widget.imgList[index]),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -111,7 +109,7 @@ class _MainCarouselState extends State<MainCarousel> {
                             color: Colors.white),
                       ),
                       Text(
-                        '/${imgList.length} >',
+                        '/${widget.imgList.length} >',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,

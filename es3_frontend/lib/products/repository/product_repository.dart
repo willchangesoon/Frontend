@@ -7,12 +7,13 @@ import 'package:retrofit/http.dart';
 import '../../common/model/cursor_pagination.dart';
 import '../../common/provider/base_pagination_repository.dart';
 import '../../common/provider/dio_provider.dart';
+import '../model/product_detail_model.dart';
 
 part 'product_repository.g.dart';
 
 final productRepositoryProvider = Provider<ProductRepository>((ref) {
   final dio = ref.watch(dioProvider);
-  final repository = ProductRepository(dio, baseUrl: 'http://localhost:8080/order-v1');
+  final repository = ProductRepository(dio, baseUrl: 'http://localhost:8080/order-v1/common/products');
   return repository;
 });
 
@@ -21,14 +22,14 @@ abstract class ProductRepository implements IBasePaginationRepository<Product> {
   factory ProductRepository(Dio dio, {String baseUrl}) = _ProductRepository;
 
   @override
-  @GET('/common/products')
+  @GET('')
   Future<CursorPagination<Product>> paginate({
     @Query('cursor') int? cursor,
     @Query('size') int? size,
   });
 
-  // @GET('/{id}')
-  // Future<ProductDetailModel> getRestaurantDetail({
-  //   @Path() required String id,
-  // });
+  @GET('/{id}')
+  Future<ProductDetailModel> getProductDetail({
+    @Path() required int id,
+  });
 }

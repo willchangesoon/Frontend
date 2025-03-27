@@ -7,7 +7,7 @@ import 'package:collection/collection.dart';
 
 import '../../common/provider/pagination_provider.dart';
 
-final productDetailProvider = Provider.family<Product?, String>((ref, id) {
+final productDetailProvider = Provider.family<Product?, int>((ref, id) {
   final state = ref.watch(productProvider);
 
   if (state is! CursorPagination) {
@@ -24,29 +24,29 @@ final productProvider = StateNotifierProvider<ProductStateNotifier, CursorPagina
 
 class ProductStateNotifier extends PaginationProvider<Product, ProductRepository> {
   ProductStateNotifier({required super.repository});
-  //
-  // getDetail({
-  //   required int id,
-  // }) async {
-  //   if (state is! CursorPagination) {
-  //     await paginate();
-  //   }
-  //
-  //   if (state is! CursorPagination) {
-  //     return;
-  //   }
-  //
-  //   final pState = state as CursorPagination;
-  //
-  //   final resp = await repository.getProductDetail(id: id);
-  //
-  //   if (pState.data.where((e) => e.id == id).isEmpty) {
-  //     state = pState.copyWith(data: <Product>[
-  //       ...pState.data,
-  //       resp,
-  //     ]);
-  //   } else {
-  //     state = pState.copyWith(data: pState.data.map<Product>((e) => e.id == id ? resp : e).toList());
-  //   }
-  // }
+
+  getDetail({
+    required int id,
+  }) async {
+    if (state is! CursorPagination) {
+      await paginate();
+    }
+
+    if (state is! CursorPagination) {
+      return;
+    }
+
+    final pState = state as CursorPagination;
+
+    final resp = await repository.getProductDetail(id: id);
+
+    if (pState.content.where((e) => e.id == id).isEmpty) {
+      state = pState.copyWith(content: <Product>[
+        ...pState.content,
+        resp,
+      ]);
+    } else {
+      state = pState.copyWith(content: pState.content.map<Product>((e) => e.id == id ? resp : e).toList());
+    }
+  }
 }

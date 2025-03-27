@@ -5,7 +5,8 @@ class ProductRankCard extends StatelessWidget {
   final String img;
   final String title;
   final String storeName;
-  final String price;
+  final int price;
+  final int? discount;
 
   const ProductRankCard({
     super.key,
@@ -14,6 +15,7 @@ class ProductRankCard extends StatelessWidget {
     required this.title,
     required this.storeName,
     required this.price,
+    this.discount,
   });
 
   @override
@@ -60,7 +62,20 @@ class ProductRankCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Text(price),
+                if (discount != null && discount! > 0)
+                  Text(
+                    '${price}vnd',
+                    style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                  ),
+                Text(
+                  '${discount != null ? price * (1 - discount! / 100) : price}원',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
           ),

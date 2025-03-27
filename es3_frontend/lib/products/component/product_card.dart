@@ -69,7 +69,7 @@ class ProductCard extends StatelessWidget {
                         ),
                       ),
                     Text(
-                      '$price원',
+                      '${discount != null ? price * (1 - discount! / 100) : price}원',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
