@@ -3,6 +3,8 @@ import 'package:es3_frontend/common/provider/secure_storage_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../const/data.dart';
+
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
   final storage = ref.watch(secureStorageProvider);
@@ -25,17 +27,17 @@ class CustomInterceptor extends Interceptor {
     if (options.headers['accessToken'] == 'true') {
       options.headers.remove('accessToken');
 
-      // final token = await storage.read(key: ACCESS_TOKEN_KEY);
+      final token = await storage.read(key: ACCESS_TOKEN_KEY);
 
-      // options.headers.addAll({'authorization': 'Bearer $token'});
+      options.headers.addAll({'authorization': 'Bearer $token'});
     }
 
     if (options.headers['refreshToken'] == 'true') {
       options.headers.remove('refreshToken');
 
-      // final token = await storage.read(key: REFRESH_TOKEN_KEY);
+      final token = await storage.read(key: REFRESH_TOKEN_KEY);
 
-      // options.headers.addAll({'authorization': 'Bearer $token'});
+      options.headers.addAll({'authorization': 'Bearer $token'});
     }
 
     return super.onRequest(options, handler);

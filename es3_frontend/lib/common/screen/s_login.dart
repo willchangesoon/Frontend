@@ -1,14 +1,20 @@
 import 'package:es3_frontend/common/layout/default_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
+import '../../user/provider/auth_provider.dart';
+import '../../user/repository/auth_repository.dart';
+
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final TextEditingController idController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool saveLogin = false;
   bool saveMobile = false;
 
@@ -27,12 +33,13 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 TextField(
-                  obscureText: true,
+                  controller: idController,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Mobile'),
                 ),
                 const SizedBox(height: 10),
                 TextField(
+                  controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Password'),
@@ -61,6 +68,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text('Remember Mobile')
                   ],
                 ),
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      await ref.read(authProvider.notifier).login(
+                        email: idController.text,
+                        password: passwordController.text,
+                      );
+
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('로그인 실패: $e')),
+                      );
+                    }
+                  },
+                  child: const Text('로그인'),
+                ),
                 renderSocialLoginBtns(),
                 renderFindBtns()
               ],
@@ -76,8 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
       child: Column(
         children: [
-          Image.asset('images/login/orderlist.png'),
-          const SizedBox(height: 10),
+          // Image.asset('images/login/orderlist.png'),
+          // const SizedBox(height: 10),
           Image.asset('images/login/img_1.png'),
           const SizedBox(height: 10),
           Image.asset('images/login/img_2.png'),

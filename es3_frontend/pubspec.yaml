@@ -44,7 +44,7 @@ dependencies:
   retrofit: ^4.4.2
   flutter_secure_storage: ^4.2.1
   logger: any  #for logging purpose
-
+  collection: ^1.17.1
 
 dev_dependencies:
   retrofit_generator: '>=8.0.0 <10.0.0'
