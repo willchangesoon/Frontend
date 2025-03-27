@@ -8,6 +8,7 @@ import 'package:es3_frontend/products/provider/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../component/product_option_bottomsheet.dart';
 import '../model/product.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
@@ -46,6 +47,20 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     return DefaultLayout(
       showBuyBottomNav: true,
       showAppBarBtnBack: true,
+      onBuyPressed: () {
+        if (state is ProductDetailModel) {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            builder: (_) => ProductOptionBottomSheet(
+              optionGroups: state.optionGroups,
+            ),
+          );
+        }
+      },
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

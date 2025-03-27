@@ -20,8 +20,12 @@ ProductDetailModel _$ProductDetailModelFromJson(Map<String, dynamic> json) =>
       additionalImages: (json['additionalImages'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      optionList: (json['optionList'] as List<dynamic>)
-          .map((e) => ProductOptionModel.fromJson(e as Map<String, dynamic>))
+      optionGroups: (json['optionGroups'] as List<dynamic>)
+          .map((e) =>
+              ProductOptionGroupModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      skuList: (json['skuList'] as List<dynamic>)
+          .map((e) => ProductSKUModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -37,5 +41,6 @@ Map<String, dynamic> _$ProductDetailModelToJson(ProductDetailModel instance) =>
       'storeLogoImg': instance.storeLogoImg,
       'description': instance.description,
       'additionalImages': instance.additionalImages,
-      'optionList': instance.optionList,
+      'optionGroups': instance.optionGroups,
+      'skuList': instance.skuList,
     };

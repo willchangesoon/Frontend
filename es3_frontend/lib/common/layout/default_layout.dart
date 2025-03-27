@@ -2,6 +2,8 @@ import 'package:es3_frontend/common/const/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../products/component/product_option_bottomsheet.dart';
+
 class DefaultLayout extends StatefulWidget {
   final String? title;
   final Widget child;
@@ -9,6 +11,7 @@ class DefaultLayout extends StatefulWidget {
   final bool showAppBarBtnBack;
   final bool appBarColor;
   final bool showBuyBottomNav;
+  final VoidCallback? onBuyPressed;
 
   const DefaultLayout({
     super.key,
@@ -18,6 +21,7 @@ class DefaultLayout extends StatefulWidget {
     this.showAppBarBtnBack = false,
     this.appBarColor = false,
     this.showBuyBottomNav = false,
+    this.onBuyPressed
   });
 
   @override
@@ -144,12 +148,12 @@ class _DefaultLayoutState extends State<DefaultLayout> {
         elevation: 12,
         color: Colors.white,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: widget.onBuyPressed ?? () {},
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black,
             padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
           ),
-          child: Text(
+          child: const Text(
             "Purchase",
             style: TextStyle(fontSize: 16, color: Colors.white),
           ),
