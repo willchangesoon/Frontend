@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 import '../../products/component/product_rank_carousel.dart';
 import '../../products/model/product.dart';
 import '../../products/component/product_card.dart';
-import '../layout/pagination_listview.dart';
+import '../layout/grid_pagination_listview.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -209,34 +209,14 @@ class _HomeScreenState extends State<HomeScreen> {
             'Ranking',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
-          ProductRankCarousel()
+          ProductRankCarousel(provider: productProvider,)
         ],
       ),
     );
   }
 
   Widget _buildProductGrid() {
-    // return GridView.builder(
-    //   shrinkWrap: true,
-    //   physics: NeverScrollableScrollPhysics(),
-    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    //     crossAxisCount: 2,
-    //     childAspectRatio: 0.65,
-    //   ),
-    //   itemCount: products.length,
-    //   itemBuilder: (context, index) {
-    //     return GestureDetector(
-    //       onTap: () {
-    //         context.pushNamed(
-    //           ProductDetailScreen.routeName,
-    //           pathParameters: {'pid': index.toString()},
-    //         );
-    //       },
-    //       child: ProductCard.fromModel(model: products[index]),
-    //     );
-    //   },
-    // );
-     return PaginationListView(
+     return GridPaginationListView(
          provider: productProvider,
          itemBuilder: <RestaurantModel>(_, index, model) {
            return GestureDetector(

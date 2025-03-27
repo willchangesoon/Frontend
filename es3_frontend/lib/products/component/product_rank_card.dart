@@ -38,7 +38,7 @@ class ProductRankCard extends StatelessWidget {
           SizedBox(
             width: 100,
             height: 100,
-            child: Image.asset(
+            child: Image.network(
               img,
               fit: BoxFit.cover,
             ),

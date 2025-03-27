@@ -6,28 +6,28 @@ import '../model/model_with_id.dart';
 import '../provider/pagination_provider.dart';
 import '../utils/pagination_utils.dart';
 
-typedef PaginationWidgetBuilder<T extends IModelWithId> = Widget Function(
+typedef GridPaginationWidgetBuilder<T extends IModelWithId> = Widget Function(
     BuildContext context, int index, T model);
 
-class PaginationListView<T extends IModelWithId>
+class GridPaginationListView<T extends IModelWithId>
     extends ConsumerStatefulWidget {
   final StateNotifierProvider<PaginationProvider, CursorPaginationBase>
       provider;
-  final PaginationWidgetBuilder<T> itemBuilder;
+  final GridPaginationWidgetBuilder<T> itemBuilder;
 
-  const PaginationListView({
+  const GridPaginationListView({
     required this.provider,
     required this.itemBuilder,
     super.key,
   });
 
   @override
-  ConsumerState<PaginationListView> createState() =>
-      _PaginationListViewState<T>();
+  ConsumerState<GridPaginationListView> createState() =>
+      _GridPaginationListViewState<T>();
 }
 
-class _PaginationListViewState<T extends IModelWithId>
-    extends ConsumerState<PaginationListView> {
+class _GridPaginationListViewState<T extends IModelWithId>
+    extends ConsumerState<GridPaginationListView> {
   final ScrollController controller = ScrollController();
 
   @override
