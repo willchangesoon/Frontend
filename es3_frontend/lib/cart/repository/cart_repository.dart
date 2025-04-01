@@ -2,10 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/provider/dio_provider.dart';
+import '../model/cart.dart';
 
 final cartRepositoryProvider = Provider<CartRepository>((ref) {
   final dio = ref.read(dioProvider);
-  return CartRepository(dio: dio); // dio 인스턴스는 상황에 맞게 관리
+  return CartRepository(dio: dio);
 });
 
 class CartRepository {
@@ -26,5 +27,18 @@ class CartRepository {
         },
       ),
     );
+  }
+
+  Future<List<CartItem>> getCartItems() async {
+    final response = await dio.get(
+      'http://localhost:8080/order-v1/carts',
+      options: Options(
+        headers: {
+        'accessToken': 'true',
+        }),
+    );
+
+    final List<dynamic> data = response.data;
+    return data.map((item) => CartItem.fromJson(item)).toList();
   }
 }

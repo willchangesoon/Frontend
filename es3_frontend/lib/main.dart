@@ -1,3 +1,4 @@
+import 'package:es3_frontend/common/const/colors.dart';
 import 'package:es3_frontend/common/layout/default_layout.dart';
 import 'package:es3_frontend/common/provider/router.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +21,8 @@ class App extends ConsumerWidget {
     return MaterialApp.router(
       theme: ThemeData(
         fontFamily: 'GmarketSans',
-        useMaterial3: true
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: MAIN_COLOR)
       ),
       // home: DefaultLayout(),
       routerConfig: router,

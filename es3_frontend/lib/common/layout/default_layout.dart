@@ -2,6 +2,7 @@ import 'package:es3_frontend/common/const/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../cart/screen/cart_screen.dart';
 import '../../products/component/product_option_bottomsheet.dart';
 
 class DefaultLayout extends StatefulWidget {
@@ -79,7 +80,9 @@ class _DefaultLayoutState extends State<DefaultLayout> {
           icon: Icon(Icons.search),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.pushNamed(CartScreen.routeName);
+          },
           icon: Icon(Icons.shopping_basket_outlined),
         ),
       ],
@@ -140,6 +143,29 @@ class _DefaultLayoutState extends State<DefaultLayout> {
   }
 
   renderBuyBottomNav() {
+    return Material(
+      elevation: 12,
+      shadowColor: GRAY2_COLOR,
+      child: BottomAppBar(
+        shadowColor: GRAY2_COLOR,
+        elevation: 12,
+        color: Colors.white,
+        child: ElevatedButton(
+          onPressed: widget.onBuyPressed ?? () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+          ),
+          child: const Text(
+            "Purchase",
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+
+  renderCartBottomNav() {
     return Material(
       elevation: 12,
       shadowColor: GRAY2_COLOR,

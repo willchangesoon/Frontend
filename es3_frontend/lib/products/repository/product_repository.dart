@@ -8,12 +8,15 @@ import '../../common/model/cursor_pagination.dart';
 import '../../common/provider/base_pagination_repository.dart';
 import '../../common/provider/dio_provider.dart';
 import '../model/product_detail_model.dart';
+import '../model/product_option_group_model.dart';
+import '../model/product_sku_model.dart';
 
 part 'product_repository.g.dart';
 
 final productRepositoryProvider = Provider<ProductRepository>((ref) {
   final dio = ref.watch(dioProvider);
-  final repository = ProductRepository(dio, baseUrl: 'http://localhost:8080/order-v1/common/products');
+  final repository = ProductRepository(dio,
+      baseUrl: 'http://localhost:8080/order-v1/common/products');
   return repository;
 });
 
@@ -30,6 +33,16 @@ abstract class ProductRepository implements IBasePaginationRepository<Product> {
 
   @GET('/{id}')
   Future<ProductDetailModel> getProductDetail({
+    @Path() required int id,
+  });
+
+  @GET('/{id}/skus')
+  Future<List<ProductSKUModel>> getSkuList({
+    @Path() required int id,
+  });
+
+  @GET('/{id}/options')
+  Future<List<ProductOptionGroupModel>> getOptionGroups({
     @Path() required int id,
   });
 }

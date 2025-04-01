@@ -1,3 +1,4 @@
+import 'package:es3_frontend/cart/screen/cart_screen.dart';
 import 'package:es3_frontend/common/layout/default_layout.dart';
 import 'package:es3_frontend/common/screen/s_category.dart';
 import 'package:es3_frontend/common/screen/s_event.dart';
@@ -26,11 +27,18 @@ final GoRouter router = GoRouter(
 
         final Map<String, Map<String, dynamic>> routeSettings = {
           '/mypage/setting': {'title': 'Setting', 'showAppBarBtnBack': true},
-          '/mypage/setting/update-profile': {'title': 'Update Profile', 'showAppBarBtnBack': true},
-          '/mypage/manage-address': {'title': 'Manage Address', 'showAppBarBtnBack': true},
+          '/mypage/setting/update-profile': {
+            'title': 'Update Profile',
+            'showAppBarBtnBack': true
+          },
+          '/mypage/manage-address': {
+            'title': 'Manage Address',
+            'showAppBarBtnBack': true
+          },
         };
 
-        final showAppBarBtnBack = routeSettings[currentPath]?['showAppBarBtnBack'] ?? false;
+        final showAppBarBtnBack =
+            routeSettings[currentPath]?['showAppBarBtnBack'] ?? false;
         final title = routeSettings[currentPath]?['title'];
 
         return DefaultLayout(
@@ -61,15 +69,14 @@ final GoRouter router = GoRouter(
           builder: (context, state) => MyPageScreen(),
           routes: [
             GoRoute(
-              path: 'setting',
-              builder: (context, state) => SettingScreen(),
-              routes: [
-                GoRoute(
-                  path: 'update-profile',
-                  builder: (context, state) => UpdateProfileScreen(),
-                ),
-              ]
-            ),
+                path: 'setting',
+                builder: (context, state) => SettingScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'update-profile',
+                    builder: (context, state) => UpdateProfileScreen(),
+                  ),
+                ]),
           ],
         ),
       ],
@@ -77,7 +84,8 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/product-detail/:pid',
       name: ProductDetailScreen.routeName,
-      builder: (context, state) => ProductDetailScreen(id: int.parse(state.pathParameters['pid']!)),
+      builder: (context, state) =>
+          ProductDetailScreen(id: int.parse(state.pathParameters['pid']!)),
     ),
     GoRoute(
       path: '/login',
@@ -86,6 +94,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/sign-up',
       builder: (context, state) => SignUpScreen(),
+    ),
+    GoRoute(
+      path: '/cart-screen',
+      name: CartScreen.routeName,
+      builder: (context, state) => CartScreen(),
     ),
   ],
 );

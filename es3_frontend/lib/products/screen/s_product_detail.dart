@@ -58,6 +58,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             builder: (_) => ProductOptionBottomSheet(
               optionGroups: state.optionGroups,
               skuList: state.skuList,
+              mode: ProductOptionMode.addToCart,
             ),
           );
         }
