@@ -3,6 +3,7 @@ import 'package:es3_frontend/user/model/user.dart';
 import 'package:es3_frontend/user/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../cart/provider/cart_count_provider.dart';
 import '../../user/provider/auth_provider.dart';
 import '../model/product_option_group_model.dart';
 import '../model/product_sku_model.dart';
@@ -128,6 +129,8 @@ class _ProductOptionBottomSheetState extends ConsumerState<ProductOptionBottomSh
                       skuId: matchedSku.skuId,
                       quantity: 1,
                     );
+                    await ref.read(cartCountProvider.notifier).fetch();
+
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('장바구니에 담았습니다')),

@@ -46,8 +46,8 @@ class CustomInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     print('[ERR] [${err.requestOptions.method}] [${err.requestOptions.uri}]');
-    print('${err}');
-    handler.reject(err);
+    // print('${err}');
+    // handler.reject(err);
     return super.onError(err, handler);
   }
 

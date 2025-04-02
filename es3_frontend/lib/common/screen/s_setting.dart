@@ -20,7 +20,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _myInfo(),
-          Divider(thickness: 1),
+          const Divider(thickness: 1),
           _generalSetting(),
         ],
       ),
@@ -31,7 +31,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'My Info',
           style: TextStyle(
             fontSize: 16,
@@ -42,19 +42,19 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Update Profile'),
+            const Text('Update Profile'),
             IconButton(
                 onPressed: () {
                   context.push('/mypage/setting/update-profile');
                 },
-                icon: Icon(Icons.chevron_right))
+                icon: const Icon(Icons.chevron_right))
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Manage Shipping Address'),
-            IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
+            const Text('Manage Shipping Address'),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.chevron_right))
           ],
         ),
       ],
@@ -65,7 +65,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Setting',
           style: TextStyle(
             fontSize: 16,
@@ -76,8 +76,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Notification Setting'),
-            IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
+            const Text('Notification Setting'),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.chevron_right))
           ],
         ),
         GestureDetector(
@@ -85,7 +85,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
             ref.watch(authProvider.notifier).logout();
             context.go('/');
           },
-          child: Text('Log out'),
+          child: const Text('Log out'),
         ),
       ],
     );

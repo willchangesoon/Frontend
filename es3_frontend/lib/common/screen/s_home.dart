@@ -46,11 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           renderMainMenu(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: MainCarousel(
               aspectRatio: 1.0,
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              margin: EdgeInsets.symmetric(horizontal: 8),
               imgList: [
                 'https://dmd-studios.com/uploads/by_product/sku-777/d0196aba3ee1cd86fe6fee5ee7971a52.jpg',
                 'https://dmd-studios.com/uploads/by_product/sku-752/f546ec1db15c50b7748bf4711812e36c.JPG',
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Trending Products',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
@@ -159,11 +159,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildProductRank() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Ranking',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),

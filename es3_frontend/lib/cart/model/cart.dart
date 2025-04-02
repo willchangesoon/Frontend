@@ -31,4 +31,32 @@ class CartItem {
   });
 
   factory CartItem.fromJson(Map<String, dynamic> json) => _$CartItemFromJson(json);
+
+  CartItem copyWith({
+    int? cartItemId,
+    int? skuId,
+    int? productId,
+    String? productTitle,
+    String? storeName,
+    String? optionSummary,
+    int? quantity,
+    double? price,
+    double? additionalPrice,
+    String? imageUrl,
+    int? discount,
+  }) {
+    return CartItem(
+      cartItemId: cartItemId ?? this.cartItemId,
+      skuId: skuId ?? this.skuId,
+      productId: productId ?? this.productId,
+      productTitle: productTitle ?? this.productTitle,
+      storeName: storeName ?? this.storeName,
+      optionSummary: optionSummary ?? this.optionSummary,
+      quantity: quantity ?? this.quantity,
+      price: price ?? this.price,
+      additionalPrice: additionalPrice ?? this.additionalPrice,
+      imageUrl: imageUrl ?? this.imageUrl,
+      discount: discount ?? this.discount,
+    );
+  }
 }

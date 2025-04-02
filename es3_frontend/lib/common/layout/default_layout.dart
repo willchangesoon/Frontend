@@ -1,11 +1,14 @@
 import 'package:es3_frontend/common/const/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../cart/provider/cart_count_provider.dart';
+import '../../cart/repository/cart_repository.dart';
 import '../../cart/screen/cart_screen.dart';
 import '../../products/component/product_option_bottomsheet.dart';
 
-class DefaultLayout extends StatefulWidget {
+class DefaultLayout extends ConsumerStatefulWidget {
   final String? title;
   final Widget child;
   final bool showBottomNav;
@@ -26,10 +29,10 @@ class DefaultLayout extends StatefulWidget {
   });
 
   @override
-  State<DefaultLayout> createState() => _DefaultLayoutState();
+  ConsumerState<DefaultLayout> createState() => _DefaultLayoutState();
 }
 
-class _DefaultLayoutState extends State<DefaultLayout> {
+class _DefaultLayoutState extends ConsumerState<DefaultLayout> {
   int _currentIndex = 2;
   final List<String> _routes = [
     '/category',
@@ -41,9 +44,10 @@ class _DefaultLayoutState extends State<DefaultLayout> {
 
   @override
   Widget build(BuildContext context) {
+  final cartCount = ref.watch(cartCountProvider);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: renderAppBar(),
+      appBar: renderAppBar(cartCount),
       body: Container(
         color: Colors.white,
         child: widget.child,
@@ -56,7 +60,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
     );
   }
 
-  renderAppBar() {
+  renderAppBar(cartCount) {
     return AppBar(
       backgroundColor: widget.appBarColor ? MAIN_COLOR : Colors.white,
       leading: widget.showAppBarBtnBack
@@ -77,15 +81,45 @@ class _DefaultLayoutState extends State<DefaultLayout> {
       actions: [
         IconButton(
           onPressed: () {},
-          icon: Icon(Icons.search),
+          icon: const Icon(Icons.search),
         ),
-        IconButton(
-          onPressed: () {
-            context.pushNamed(CartScreen.routeName);
-          },
-          icon: Icon(Icons.shopping_basket_outlined),
+        Stack(
+          children: [
+            IconButton(
+              onPressed: () {
+                context.pushNamed(CartScreen.routeName);
+              },
+              icon: const Icon(Icons.shopping_basket_outlined),
+            ),
+            if (cartCount > 0)
+              Positioned(
+                right: 6,
+                top: 6,
+                child: Container(
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  constraints: const BoxConstraints(
+                    minWidth: 16,
+                    minHeight: 16,
+                  ),
+                  child: Text(
+                    '$cartCount',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+          ],
         ),
       ],
+
     );
   }
 

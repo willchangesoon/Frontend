@@ -17,53 +17,53 @@ class MyPageScreen extends ConsumerStatefulWidget {
 }
 
 class _MyPageScreenState extends ConsumerState<MyPageScreen> {
-  final List<Product> products = [
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "하이브",
-      storeName: "니트 스판 바디수트",
-      price: 12900,
-      discount: 10,
-      rating: 4.8,
-    ),
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "화이트걸",
-      storeName: "라이트 탱크탑",
-      price: 23800,
-      discount: null,
-      rating: 4.6,
-    ),
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "니스바",
-      storeName: "순면 라인 나시",
-      price: 18000,
-      discount: 20,
-      rating: 4.4,
-    ),
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "순라나",
-      storeName: "데일리로 입기 좋은 반팔",
-      price: 230000,
-      discount: null,
-      rating: 4.5,
-    ),
-    Product(
-      id: 0,
-      imageUrl: "assets/images/sample/img.png",
-      title: "하이브",
-      storeName: "니트 스판 바디수트",
-      price: 10000,
-      discount: 10,
-      rating: 4.8,
-    ),
-  ];
+  // final List<Product> products = [
+  //   Product(
+  //     id: 0,
+  //     imageUrl: "assets/images/sample/img.png",
+  //     title: "하이브",
+  //     storeName: "니트 스판 바디수트",
+  //     price: 12900,
+  //     discount: 10,
+  //     rating: 4.8,
+  //   ),
+  //   Product(
+  //     id: 0,
+  //     imageUrl: "assets/images/sample/img.png",
+  //     title: "화이트걸",
+  //     storeName: "라이트 탱크탑",
+  //     price: 23800,
+  //     discount: null,
+  //     rating: 4.6,
+  //   ),
+  //   Product(
+  //     id: 0,
+  //     imageUrl: "assets/images/sample/img.png",
+  //     title: "니스바",
+  //     storeName: "순면 라인 나시",
+  //     price: 18000,
+  //     discount: 20,
+  //     rating: 4.4,
+  //   ),
+  //   Product(
+  //     id: 0,
+  //     imageUrl: "assets/images/sample/img.png",
+  //     title: "순라나",
+  //     storeName: "데일리로 입기 좋은 반팔",
+  //     price: 230000,
+  //     discount: null,
+  //     rating: 4.5,
+  //   ),
+  //   Product(
+  //     id: 0,
+  //     imageUrl: "assets/images/sample/img.png",
+  //     title: "하이브",
+  //     storeName: "니트 스판 바디수트",
+  //     price: 10000,
+  //     discount: 10,
+  //     rating: 4.8,
+  //   ),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -114,10 +114,10 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
         if (state == null)
           GestureDetector(
             onTap: () => context.push('/login'),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Click here to Login',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                 ),
@@ -125,14 +125,14 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
             ),
           ),
         if (state is UserModelLoading)
-          Center(
+          const Center(
             child: CircularProgressIndicator(),
           ),
         IconButton(
           onPressed: () {
             context.push('/mypage/setting');
           },
-          icon: Icon(Icons.settings),
+          icon: const Icon(Icons.settings),
         ),
       ],
     );
@@ -145,13 +145,13 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
         Column(
           children: [
             Image.asset('images/mypage/orderlist.png', height: 32),
-            Text(
+            const Text(
               'Orders',
               style: TextStyle(
                 fontSize: 12,
               ),
             ),
-            Text(
+            const Text(
               'see more',
               style: TextStyle(color: SUB_COLOR, fontSize: 12),
             ),
@@ -160,13 +160,13 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
         Column(
           children: [
             Image.asset('images/mypage/point.png', height: 32),
-            Text(
+            const Text(
               'Point',
               style: TextStyle(
                 fontSize: 12,
               ),
             ),
-            Text(
+            const Text(
               '22000',
               style: TextStyle(
                 fontSize: 12,
@@ -178,13 +178,13 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
         Column(
           children: [
             Image.asset('images/mypage/coupon.png', height: 32),
-            Text(
+            const Text(
               'Coupon',
               style: TextStyle(
                 fontSize: 12,
               ),
             ),
-            Text(
+            const Text(
               '8',
               style: TextStyle(
                 fontSize: 12,
@@ -196,13 +196,13 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
         Column(
           children: [
             Image.asset('images/mypage/review.png', height: 32),
-            Text(
+            const Text(
               'Review',
               style: TextStyle(
                 fontSize: 12,
               ),
             ),
-            Text(
+            const Text(
               '8',
               style: TextStyle(
                 color: SUB_COLOR,
@@ -221,13 +221,13 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Order Status',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             IconButton(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.chevron_right,
               ),
             )
@@ -302,16 +302,16 @@ class _MyPageScreenState extends ConsumerState<MyPageScreen> {
           ],
         ),
         const SizedBox(height: 20),
-        SizedBox(
-          height: 270,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              return ProductCard.fromModel(model: products[index]);
-            },
-          ),
-        )
+        // SizedBox(
+        //   height: 270,
+        //   child: ListView.builder(
+        //     scrollDirection: Axis.horizontal,
+        //     itemCount: products.length,
+        //     itemBuilder: (context, index) {
+        //       return ProductCard.fromModel(model: products[index]);
+        //     },
+        //   ),
+        // )
       ],
     );
   }
