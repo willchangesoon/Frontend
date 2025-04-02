@@ -10,9 +10,9 @@ import '../provider/cart_count_provider.dart';
 import '../repository/cart_repository.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
+  static  String get routeName => 'cart';
   const CartScreen({super.key});
 
-  static String get routeName => 'cart-screen';
 
   @override
   ConsumerState<CartScreen> createState() => _CartScreenState();

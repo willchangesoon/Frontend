@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../cart/provider/cart_count_provider.dart';
 import '../../cart/repository/cart_repository.dart';
-import '../../cart/screen/cart_screen.dart';
+import '../../cart/screen/s_cart.dart';
 import '../../products/component/product_option_bottomsheet.dart';
 
 class DefaultLayout extends ConsumerStatefulWidget {

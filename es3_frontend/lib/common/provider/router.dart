@@ -1,6 +1,6 @@
-import 'package:es3_frontend/cart/screen/cart_screen.dart';
+import 'package:es3_frontend/cart/screen/s_cart.dart';
 import 'package:es3_frontend/common/layout/default_layout.dart';
-import 'package:es3_frontend/common/screen/s_category.dart';
+import 'package:es3_frontend/category/screen/s_category.dart';
 import 'package:es3_frontend/common/screen/s_event.dart';
 import 'package:es3_frontend/common/screen/s_favorite.dart';
 import 'package:es3_frontend/common/screen/s_home.dart';
@@ -13,6 +13,7 @@ import 'package:es3_frontend/user/provider/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../category/screen/s_category.dart';
 import '../screen/s_setting.dart';
 
 final routerProvider = Provider((ref) {
@@ -96,7 +97,7 @@ final routerProvider = Provider((ref) {
         builder: (context, state) => SignUpScreen(),
       ),
       GoRoute(
-        path: '/cart-screen',
+        path: '/cart',
         name: CartScreen.routeName,
         builder: (context, state) => CartScreen(),
       ),
