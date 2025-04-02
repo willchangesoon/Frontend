@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:es3_frontend/user/model/user.dart';
+import 'package:es3_frontend/user/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../user/provider/auth_provider.dart';
@@ -56,7 +58,6 @@ class _ProductOptionBottomSheetState extends ConsumerState<ProductOptionBottomSh
   @override
   Widget build(BuildContext context) {
     final allSelected = selectedOptions.values.every((v) => v != null);
-    final isLoggedIn = ref.watch(authProvider);
 
     return DraggableScrollableSheet(
       expand: false,
@@ -115,7 +116,7 @@ class _ProductOptionBottomSheetState extends ConsumerState<ProductOptionBottomSh
                   }
 
                   if (widget.mode == ProductOptionMode.addToCart) {
-                    if (!isLoggedIn) {
+                    if (ref.read(authProvider) is! UserModel) {
                       Navigator.of(context).pop();
                       if (context.mounted) {
                         context.push('/login');

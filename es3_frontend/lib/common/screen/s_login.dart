@@ -21,7 +21,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      appBarColor: true,
       showBottomNav: false,
       showAppBarBtnBack: true,
       title: 'LOGIN',
@@ -68,25 +67,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Text('Remember Mobile')
                   ],
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      await ref.read(authProvider.notifier).login(
-                        email: idController.text,
-                        password: passwordController.text,
-                      );
-
-                      if (context.mounted) {
-                        Navigator.of(context).pop();
-                      }
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('로그인 실패: $e')),
-                      );
-                    }
-                  },
-                  child: const Text('로그인'),
-                ),
                 renderSocialLoginBtns(),
                 renderFindBtns()
               ],
@@ -102,8 +82,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
       child: Column(
         children: [
-          // Image.asset('images/login/orderlist.png'),
-          // const SizedBox(height: 10),
+          SizedBox(
+            width: 300,
+            child: ElevatedButton(
+              onPressed: () async {
+                try {
+                  await ref.read(authProvider.notifier).login(
+                    email: idController.text,
+                    password: passwordController.text,
+                  );
+
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('로그인 실패: $e')),
+                  );
+                }
+              },
+              child: const Text('로그인'),
+            ),
+          ),
+          const SizedBox(height: 10),
           Image.asset('images/login/img_1.png'),
           const SizedBox(height: 10),
           Image.asset('images/login/img_2.png'),
@@ -122,12 +123,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           height: 15,
           child: VerticalDivider(color: Colors.grey),
         ),
-        TextButton(onPressed: (){}, child: Text('Forgot ID?')),
-        const SizedBox(
-          height: 15,
-          child: VerticalDivider(color: Colors.grey),
-        ),
-        TextButton(onPressed: (){}, child: Text('Forgot Password?')),
+        TextButton(onPressed: (){}, child: Text('Forgot ID/Password?')),
       ],
     );
   }

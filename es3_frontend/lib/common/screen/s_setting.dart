@@ -1,14 +1,16 @@
+import 'package:es3_frontend/user/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class SettingScreen extends StatefulWidget {
+class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
 
   @override
-  State<SettingScreen> createState() => _SettingScreenState();
+  ConsumerState<SettingScreen> createState() => _SettingScreenState();
 }
 
-class _SettingScreenState extends State<SettingScreen> {
+class _SettingScreenState extends ConsumerState<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -78,7 +80,13 @@ class _SettingScreenState extends State<SettingScreen> {
             IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
           ],
         ),
-        Text('Log out'),
+        GestureDetector(
+          onTap: (){
+            ref.watch(authProvider.notifier).logout();
+            context.go('/');
+          },
+          child: Text('Log out'),
+        ),
       ],
     );
   }

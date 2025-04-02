@@ -1,18 +1,22 @@
 import 'package:es3_frontend/products/component/product_card.dart';
+import 'package:es3_frontend/user/model/user.dart';
+import 'package:es3_frontend/user/provider/auth_provider.dart';
+import 'package:es3_frontend/user/provider/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../products/model/product.dart';
 import '../const/colors.dart';
 
-class MyPageScreen extends StatefulWidget {
+class MyPageScreen extends ConsumerStatefulWidget {
   const MyPageScreen({super.key});
 
   @override
-  State<MyPageScreen> createState() => _MyPageScreenState();
+  ConsumerState<MyPageScreen> createState() => _MyPageScreenState();
 }
 
-class _MyPageScreenState extends State<MyPageScreen> {
+class _MyPageScreenState extends ConsumerState<MyPageScreen> {
   final List<Product> products = [
     Product(
       id: 0,
@@ -63,13 +67,14 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authProvider);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: SingleChildScrollView(
         child: Column(
           spacing: 10,
           children: [
-            _userInfo(),
+            _userInfo(user),
             Divider(),
             _history(),
             Divider(),
@@ -84,25 +89,45 @@ class _MyPageScreenState extends State<MyPageScreen> {
     );
   }
 
-  Widget _userInfo() {
+  Widget _userInfo(state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          children: [
-            Text(
-              'Hello! Username',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-            ),
-            Text(
-              'abcd****@gmail.com',
-              style: TextStyle(
+        if (state is UserModel)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Hello! ${state.name}',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              Text(
+                '${state.email}',
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
-                  color: Colors.grey),
+                  color: GRAY2_COLOR,
+                ),
+              ),
+            ],
+          ),
+        if (state == null)
+          GestureDetector(
+            onTap: () => context.push('/login'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Click here to Login',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        if (state is UserModelLoading)
+          Center(
+            child: CircularProgressIndicator(),
+          ),
         IconButton(
           onPressed: () {
             context.push('/mypage/setting');
