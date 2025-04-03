@@ -1,5 +1,7 @@
+import 'package:es3_frontend/products/screen/s_product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../model/category_tree_builder.dart';
 import '../repository/category_repository.dart';
@@ -57,9 +59,13 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                   final lower = tree[selectedUpperIndex].children[index];
                   return ListTile(
                     title: Text(lower.category.name),
-                    trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey.shade600),
+                    trailing: Icon(Icons.arrow_forward_ios,
+                        size: 16, color: Colors.grey.shade600),
                     onTap: () {
-                      // TODO: navigate to product list or next depth if needed
+                      context.pushNamed(
+                        ProductListScreen.routeName,
+                        pathParameters: {'cid': lower.category.id.toString()},
+                      );
                     },
                   );
                 },

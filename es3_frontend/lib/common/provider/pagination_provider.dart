@@ -5,16 +5,21 @@ import '../model/model_with_id.dart';
 import '../model/pagination_params.dart';
 import 'base_pagination_repository.dart';
 
-class PaginationProvider<T extends IModelWithId, U extends IBasePaginationRepository<T>>
+class PaginationProvider<T extends IModelWithId,
+        U extends IBasePaginationRepository<T>>
     extends StateNotifier<CursorPaginationBase> {
   final U repository;
 
-  PaginationProvider({required this.repository}) : super(CursorPaginationLoading()) {
+  PaginationProvider({required this.repository})
+      : super(CursorPaginationLoading()) {
     paginate();
   }
 
   Future<void> paginate({
-    int fetchCount = 20,
+    int? categoryId,
+    int? storeId,
+    bool? discounted,
+    int fetchCount = 10,
     bool fetchMore = false,
     bool forceRefetch = false,
   }) async {
@@ -74,16 +79,21 @@ class PaginationProvider<T extends IModelWithId, U extends IBasePaginationReposi
         }
       }
 
-      final resp = await repository.paginate(cursor: paginationParams.cursor, size: paginationParams.size);
+      final resp = await repository.paginate(
+        categoryId: categoryId,
+        storeId: storeId,
+        discounted: discounted,
+        cursor: paginationParams.cursor,
+        size: paginationParams.size,
+      );
 
-      if (state is CursorPaginationFetchingMore ) {
+      if (state is CursorPaginationFetchingMore) {
         final pState = state as CursorPaginationFetchingMore<T>;
 
         state = resp.copyWith(content: [
           ...pState.content,
           ...resp.content,
         ]);
-
       } else {
         state = resp;
       }

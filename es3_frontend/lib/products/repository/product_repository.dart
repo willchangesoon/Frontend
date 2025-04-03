@@ -27,6 +27,9 @@ abstract class ProductRepository implements IBasePaginationRepository<Product> {
   @override
   @GET('')
   Future<CursorPagination<Product>> paginate({
+    @Query('categoryId') int? categoryId,
+    @Query('storeId') int? storeId,
+    @Query('discounted') bool? discounted,
     @Query('cursor') int? cursor,
     @Query('size') int? size,
   });

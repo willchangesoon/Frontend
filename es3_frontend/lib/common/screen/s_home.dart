@@ -6,21 +6,23 @@ import 'package:es3_frontend/common/const/colors.dart';
 import 'package:es3_frontend/products/provider/product_provider.dart';
 import 'package:es3_frontend/products/screen/s_product_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../products/component/product_rank_carousel.dart';
 import '../../products/model/product.dart';
 import '../../products/component/product_card.dart';
 import '../layout/grid_pagination_listview.dart';
+import '../model/pagination_params.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final List<String> mainMenus = ['home', 'rank', 'sale', 'latest', 'brand'];
   int _curSelectedMenu = 0;
   final Map<String, String> options = {
@@ -38,6 +40,16 @@ class _HomeScreenState extends State<HomeScreen> {
     'athletics'
   ];
   int _curSelectedCategory = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(productProvider.notifier).paginate(
+        forceRefetch: true,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,6 +189,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildProductGrid() {
     return GridPaginationListView(
+        categoryId: null,
+        storeId: null,
+        discounted: null,
         provider: productProvider,
         itemBuilder: <RestaurantModel>(_, index, model) {
           return GestureDetector(

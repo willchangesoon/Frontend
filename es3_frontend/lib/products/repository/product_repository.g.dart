@@ -18,9 +18,21 @@ class _ProductRepository implements ProductRepository {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<CursorPagination<Product>> paginate({int? cursor, int? size}) async {
+  Future<CursorPagination<Product>> paginate({
+    int? categoryId,
+    int? storeId,
+    bool? discounted,
+    int? cursor,
+    int? size,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'cursor': cursor, r'size': size};
+    final queryParameters = <String, dynamic>{
+      r'categoryId': categoryId,
+      r'storeId': storeId,
+      r'discounted': discounted,
+      r'cursor': cursor,
+      r'size': size,
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;

@@ -1,3 +1,4 @@
+import 'package:es3_frontend/common/model/pagination_params.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,11 +12,17 @@ typedef GridPaginationWidgetBuilder<T extends IModelWithId> = Widget Function(
 
 class GridPaginationListView<T extends IModelWithId>
     extends ConsumerStatefulWidget {
+  final int? categoryId;
+  final int? storeId;
+  final bool? discounted;
   final StateNotifierProvider<PaginationProvider, CursorPaginationBase>
       provider;
   final GridPaginationWidgetBuilder<T> itemBuilder;
 
   const GridPaginationListView({
+    required this.categoryId,
+    required this.storeId,
+    required this.discounted,
     required this.provider,
     required this.itemBuilder,
     super.key,
@@ -34,6 +41,9 @@ class _GridPaginationListViewState<T extends IModelWithId>
   void initState() {
     super.initState();
     controller.addListener(listener);
+    // controller.addListener(() {
+    //   print('Scroll offset: ${controller.offset}');
+    // });
   }
 
   @override
@@ -44,7 +54,12 @@ class _GridPaginationListViewState<T extends IModelWithId>
   }
 
   void listener() {
+    print('Scroll offset: ${controller.offset}');
+
     PaginationUtils.paginate(
+      categoryId: widget.categoryId,
+      storeId: widget.storeId,
+      discounted: widget.discounted,
       controller: controller,
       provider: ref.read(widget.provider.notifier),
     );
@@ -75,7 +90,12 @@ class _GridPaginationListViewState<T extends IModelWithId>
           ),
           ElevatedButton(
             onPressed: () {
-              ref.read(widget.provider.notifier).paginate(forceRefetch: true);
+              ref.read(widget.provider.notifier).paginate(
+                    categoryId: widget.categoryId,
+                    storeId: widget.storeId,
+                    discounted: widget.discounted,
+                    forceRefetch: true,
+                  );
             },
             child: Text(
               '다시시도',
@@ -89,7 +109,12 @@ class _GridPaginationListViewState<T extends IModelWithId>
 
     return RefreshIndicator(
       onRefresh: () async {
-        ref.read(widget.provider.notifier).paginate(forceRefetch: true);
+        ref.read(widget.provider.notifier).paginate(
+              categoryId: widget.categoryId,
+              storeId: widget.storeId,
+              discounted: widget.discounted,
+              forceRefetch: true,
+            );
       },
       child: GridView.builder(
         shrinkWrap: true,

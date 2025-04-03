@@ -36,6 +36,9 @@ class _ProductRankCarouselState extends ConsumerState<ProductRankCarousel> {
 
   void _onScroll() {
     PaginationUtils.paginate(
+      categoryId: null,
+      storeId: null,
+      discounted: null,
       controller: _scrollController,
       provider: ref.read(widget.provider.notifier),
     );

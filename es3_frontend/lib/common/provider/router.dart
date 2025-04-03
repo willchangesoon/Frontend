@@ -9,6 +9,7 @@ import 'package:es3_frontend/common/screen/s_mypage.dart';
 import 'package:es3_frontend/products/screen/s_product_detail.dart';
 import 'package:es3_frontend/common/screen/s_sign_up.dart';
 import 'package:es3_frontend/common/screen/s_update_profile.dart';
+import 'package:es3_frontend/products/screen/s_product_list.dart';
 import 'package:es3_frontend/user/provider/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +19,7 @@ import '../screen/s_setting.dart';
 
 final routerProvider = Provider((ref) {
   final provider = ref.watch(userProvider);
-  return  GoRouter(
+  return GoRouter(
     refreshListenable: provider,
     initialLocation: '/home',
     routes: [
@@ -87,6 +88,12 @@ final routerProvider = Provider((ref) {
         name: ProductDetailScreen.routeName,
         builder: (context, state) =>
             ProductDetailScreen(id: int.parse(state.pathParameters['pid']!)),
+      ),
+      GoRoute(
+        path: '/product-list/:cid',
+        name: ProductListScreen.routeName,
+        builder: (context, state) =>
+            ProductListScreen(categoryId: int.parse(state.pathParameters['cid']!)),
       ),
       GoRoute(
         path: '/login',
