@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:es3_frontend/cart/provider/cart_count_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/provider/dio_provider.dart';
@@ -13,7 +12,7 @@ final cartRepositoryProvider = Provider<CartRepository>((ref) {
 class CartRepository {
   final Dio dio;
 
-  CartRepository({ required this.dio});
+  CartRepository({required this.dio});
 
   Future<void> addToCart({required int skuId, required int quantity}) async {
     await dio.post(
