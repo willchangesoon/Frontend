@@ -13,6 +13,7 @@ import '../../products/component/product_rank_carousel.dart';
 import '../../products/model/product.dart';
 import '../../products/component/product_card.dart';
 import '../layout/grid_pagination_listview.dart';
+import '../layout/grid_pagination_sliver.dart';
 import '../model/pagination_params.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -40,6 +41,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     'athletics'
   ];
   int _curSelectedCategory = 0;
+  final ScrollController _scrollController = ScrollController();
+
 
   @override
   void initState() {
@@ -50,15 +53,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       );
     });
   }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          renderMainMenu(),
-          const Padding(
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        SliverToBoxAdapter(child: renderMainMenu()),
+        SliverToBoxAdapter(
+          child: const Padding(
             padding: EdgeInsets.all(8.0),
             child: MainCarousel(
               aspectRatio: 1.0,
@@ -70,15 +78,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
-          mainOptions(),
-          const SizedBox(height: 20),
-          _buildProductRank(),
-          const SizedBox(height: 20),
-          listMenu(),
-          _buildProductGrid()
-        ],
-      ),
+        ),
+        SliverToBoxAdapter(child: mainOptions()),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: _buildProductRank(),
+          ),
+        ),
+        SliverToBoxAdapter(child: listMenu()),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          sliver: GridPaginationSliver<Product>(
+            scrollController: _scrollController,
+            categoryId: null,
+            storeId: null,
+            discounted: null,
+            provider: productProvider,
+            itemBuilder: (_, index, model) {
+              return GestureDetector(
+                child: ProductCard.fromModel(model: model),
+                onTap: () {
+                  context.pushNamed(
+                    ProductDetailScreen.routeName,
+                    pathParameters: {'pid': model.id.toString()},
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
