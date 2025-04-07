@@ -8,7 +8,7 @@ es3_seller 는 판매자용 앱이며(구현중) es3_frontend는 일반 유저�
 ## 주요 기능
 - 홈 화면 상품 리스트 및 랭킹
 - 상품 상세 페이지
-- 카테고리 필터링 (대/중/소 분류)
+- 카테고리 필터링 (상위/하위 분류)
 - 무한 스크롤 / Pull to Refresh
 - 에러 및 로딩 처리
 - 서버 연동 (Spring Boot + QueryDSL)
@@ -20,6 +20,7 @@ es3_seller 는 판매자용 앱이며(구현중) es3_frontend는 일반 유저�
 
 ## 화면 구성
 - 홈 화면
+- ![Kapture 2025-04-07 at 14 01 58](https://github.com/user-attachments/assets/6a445f15-a816-4db2-ab0b-ef38ef53f61b)
 - 상품 상세
 - 카테고리 별 필터링
 - 무한 스크롤 리스트
